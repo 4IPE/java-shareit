@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.dao;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.NotFound;
 import ru.practicum.shareit.exception.UniqueEmail;
