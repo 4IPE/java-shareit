@@ -13,6 +13,6 @@ public class ItemDto {
     private final int id;
     private  String name;
     private  String description;
-    private boolean available;
+    private Boolean available;
     private final User owner;
 }

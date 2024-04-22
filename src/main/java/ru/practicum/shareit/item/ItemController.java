@@ -6,6 +6,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -21,23 +22,23 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto addItem(Item item,@RequestHeader("X-Sharer-User-Id") int idUser) {
+    public ItemDto addItem(@Valid @RequestBody Item item,@RequestHeader("X-Sharer-User-Id") int idUser) {
         return itemService.addItem(item,idUser);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto editItem(@PathVariable int itemId,@RequestBody ItemDto item,@RequestHeader("X-Sharer-User-Id") int idUser){
+    public ItemDto editItem(@PathVariable int itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") int idUser){
         return itemService.editItem(itemId, item,idUser);
     }
+
 
     @GetMapping("/{itemId}")
     public ItemDto getItem(@PathVariable int itemId) {
         return itemService.getItem(itemId);
     }
-
     @GetMapping
-    public List<ItemDto> getAllItems() {
-        return itemService.getAllItem();
+    public List<ItemDto> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser) {
+        return itemService.getItemWithIdUser(idUser);
     }
 
     @GetMapping("/search")

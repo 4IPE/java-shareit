@@ -10,10 +10,10 @@ public interface ItemService {
 
     ItemDto addItem(Item item, int id);
 
-    List<ItemDto> getAllItem();
-
     ItemDto getItem(int id);
 
+
+    List<ItemDto> getItemWithIdUser(int id);
 
     //TODO ДОДЕЛАТЬ
     ItemDto editItem(int id, ItemDto item, int idUser);

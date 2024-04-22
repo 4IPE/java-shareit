@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import ru.practicum.shareit.user.User;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -12,12 +14,16 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class Item {
-    private  int id;
+    private int id;
     @NotNull
-    private  String name;
+    @NotEmpty
+    @NotBlank
+    private String name;
     @NotNull
-    private  String description;
+    @NotEmpty
+    @NotBlank
+    private String description;
     @NotNull
-    private boolean available;
-    private  User owner;
+    private Boolean available;
+    private User owner;
 }

@@ -1,4 +1,4 @@
-package ru.practicum.shareit.exception;
+package ru.practicum.shareit.exception.model;
 
 public class NotFound extends RuntimeException {
     public NotFound(Object obj, int id) {

@@ -1,8 +1,8 @@
 package ru.practicum.shareit.user.dao;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.exception.NotFound;
-import ru.practicum.shareit.exception.UniqueEmail;
+import ru.practicum.shareit.exception.model.NotFound;
+import ru.practicum.shareit.exception.model.UniqueEmail;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -33,6 +33,9 @@ public class FakeUserDao {
     }
 
     public User getUserById(int id) {
+        if(userDao.get(id)==null){
+            throw new NotFound(User.class,id);
+        }
         return userDao.get(id);
     }
 

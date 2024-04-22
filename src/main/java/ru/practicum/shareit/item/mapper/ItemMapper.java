@@ -12,7 +12,7 @@ public class ItemMapper {
                 .owner(item.getOwner())
                 .name(item.getName())
                 .description(item.getDescription())
-                .available(item.isAvailable()).build();
+                .available(item.getAvailable()).build();
 
     }
 }

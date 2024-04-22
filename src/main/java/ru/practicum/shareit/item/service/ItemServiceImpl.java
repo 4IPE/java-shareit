@@ -24,16 +24,15 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(itemDao.addItem(item,id));
     }
 
-    @Override
-    public List<ItemDto> getAllItem() {
-        return itemDao.getItems().stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
-    }
 
     @Override
     public ItemDto getItem(int id) {
         return ItemMapper.toItemDto(itemDao.getItemWithId(id));
     }
-    //TODO ДОДЕЛАТЬ
+    @Override
+    public List<ItemDto> getItemWithIdUser(int id) {
+        return itemDao.getItemWithIdUser(id).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
+    }
     @Override
     public ItemDto editItem(int id, ItemDto item,int idUser) {
         return ItemMapper.toItemDto(itemDao.updItem(id, item,idUser));
