@@ -20,8 +20,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto addItem(Item item) {
-        return ItemMapper.toItemDto(itemDao.addItem(item));
+    public ItemDto addItem(Item item, int id) {
+        return ItemMapper.toItemDto(itemDao.addItem(item,id));
     }
 
     @Override
@@ -35,8 +35,8 @@ public class ItemServiceImpl implements ItemService {
     }
     //TODO ДОДЕЛАТЬ
     @Override
-    public ItemDto editItem(int id, ItemDto item) {
-        return ItemMapper.toItemDto(itemDao.updItem(id, item));
+    public ItemDto editItem(int id, ItemDto item,int idUser) {
+        return ItemMapper.toItemDto(itemDao.updItem(id, item,idUser));
     }
     @Override
     public List<ItemDto> search(String desc) {

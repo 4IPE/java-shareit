@@ -7,13 +7,16 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemDto addItem(Item item);
+
+    ItemDto addItem(Item item, int id);
 
     List<ItemDto> getAllItem();
 
     ItemDto getItem(int id);
 
-    ItemDto editItem(int id, ItemDto item);
+
+    //TODO ДОДЕЛАТЬ
+    ItemDto editItem(int id, ItemDto item, int idUser);
 
     List<ItemDto> search(String desc);
 }
