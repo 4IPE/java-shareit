@@ -16,19 +16,20 @@ import java.util.List;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
+
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
 
     @PostMapping
-    public ItemDto addItem(@Valid @RequestBody Item item,@RequestHeader("X-Sharer-User-Id") int idUser) {
-        return itemService.addItem(item,idUser);
+    public ItemDto addItem(@Valid @RequestBody Item item, @RequestHeader("X-Sharer-User-Id") int idUser) {
+        return itemService.addItem(item, idUser);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto editItem(@PathVariable int itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") int idUser){
-        return itemService.editItem(itemId, item,idUser);
+    public ItemDto editItem(@PathVariable int itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") int idUser) {
+        return itemService.editItem(itemId, item, idUser);
     }
 
 
@@ -36,6 +37,7 @@ public class ItemController {
     public ItemDto getItem(@PathVariable int itemId) {
         return itemService.getItem(itemId);
     }
+
     @GetMapping
     public List<ItemDto> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser) {
         return itemService.getItemWithIdUser(idUser);

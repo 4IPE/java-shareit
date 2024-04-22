@@ -15,4 +15,14 @@ public class ItemMapper {
                 .available(item.getAvailable()).build();
 
     }
+    public static Item toItem(ItemDto item){
+        return Item.builder()
+                .id(item.getId())
+                .owner(item.getOwner())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable()).build();
+
+    }
+
 }

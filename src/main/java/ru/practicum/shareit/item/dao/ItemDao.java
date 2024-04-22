@@ -56,7 +56,6 @@ public class ItemDao {
     public List<Item> getItems() {
         return new ArrayList<>(items.values());
     }
-
     public Item updItem(int id, ItemDto itemDto,int idUser){
         Item item = getItemWithId(id);
         if (!itemUser.containsKey(idUser)) {

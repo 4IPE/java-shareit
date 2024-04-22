@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,13 @@ public class ItemServiceImpl implements ItemService {
     }
     @Override
     public List<ItemDto> search(String desc) {
-        return null;
+        if(desc==null||desc.isBlank()||desc.isEmpty()){
+            return new ArrayList<>();
+        }
+        return itemDao.getItems().stream()
+                .filter(item->item.getDescription().toLowerCase()
+                        .contains(desc.toLowerCase())&& item.getAvailable())
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 }

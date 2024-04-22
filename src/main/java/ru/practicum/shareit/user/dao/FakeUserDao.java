@@ -57,13 +57,10 @@ public class FakeUserDao {
                 !getUserDao().get(id).getEmail().equals(user.getEmail())) {
             throw new UniqueEmail(user.getEmail());
         }
-        User oldUser = getUserById(id);
-        User newUser = User.builder()
-                .id(oldUser.getId())
-                .name(user.getName() != null ? user.getName() : oldUser.getName())
-                .email(user.getEmail() != null ? user.getEmail() : oldUser.getEmail()).build();
-        userDao.put(oldUser.getId(), newUser);
-        return newUser;
+        User userNew = getUserById(id);
+        userNew.setName(user.getName() != null ? user.getName() : userNew.getName());
+        userNew.setEmail(user.getEmail() != null ? user.getEmail() : userNew.getEmail());
+        return userNew;
     }
 
 
