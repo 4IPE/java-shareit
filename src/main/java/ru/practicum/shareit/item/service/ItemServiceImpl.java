@@ -22,7 +22,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addItem(Item item, int id) {
-        return ItemMapper.toItemDto(itemDao.addItem(item,id));
+        return ItemMapper.toItemDto(itemDao.addItem(item, id));
     }
 
 
@@ -30,22 +30,25 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto getItem(int id) {
         return ItemMapper.toItemDto(itemDao.getItemWithId(id));
     }
+
     @Override
     public List<ItemDto> getItemWithIdUser(int id) {
         return itemDao.getItemWithIdUser(id).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
+
     @Override
-    public ItemDto editItem(int id, ItemDto item,int idUser) {
-        return ItemMapper.toItemDto(itemDao.updItem(id, item,idUser));
+    public ItemDto editItem(int id, ItemDto item, int idUser) {
+        return ItemMapper.toItemDto(itemDao.updItem(id, item, idUser));
     }
+
     @Override
     public List<ItemDto> search(String desc) {
-        if(desc==null||desc.isBlank()||desc.isEmpty()){
+        if (desc == null || desc.isBlank() || desc.isEmpty()) {
             return new ArrayList<>();
         }
         return itemDao.getItems().stream()
-                .filter(item->item.getDescription().toLowerCase()
-                        .contains(desc.toLowerCase())&& item.getAvailable())
+                .filter(item -> item.getDescription().toLowerCase()
+                        .contains(desc.toLowerCase()) && item.getAvailable())
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }

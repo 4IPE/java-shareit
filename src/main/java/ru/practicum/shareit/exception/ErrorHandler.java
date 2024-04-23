@@ -10,7 +10,8 @@ import ru.practicum.shareit.exception.model.NotFound;
 import ru.practicum.shareit.exception.model.UniqueEmail;
 
 import java.util.Map;
-//TODO Доработать чтобы отлавливался @requestHeaders
+
+
 @RestControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler
@@ -24,6 +25,7 @@ public class ErrorHandler {
     public Map<String, String> uniqueEmail(final UniqueEmail uniqueEmail) {
         return Map.of("UniqueEmail: ", uniqueEmail.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> valid(final RuntimeException e) {

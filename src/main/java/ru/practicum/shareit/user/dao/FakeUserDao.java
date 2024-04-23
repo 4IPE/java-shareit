@@ -33,8 +33,8 @@ public class FakeUserDao {
     }
 
     public User getUserById(int id) {
-        if(userDao.get(id)==null){
-            throw new NotFound(User.class,id);
+        if (userDao.get(id) == null) {
+            throw new NotFound(User.class, id);
         }
         return userDao.get(id);
     }

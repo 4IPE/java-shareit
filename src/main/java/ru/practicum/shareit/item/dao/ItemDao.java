@@ -16,9 +16,10 @@ import java.util.List;
 public class ItemDao {
 
     HashMap<Integer, Item> items = new HashMap<>();
-    HashMap<Integer,List<Item>> itemUser = new HashMap<>();
-    private static  int id = 0;
+    HashMap<Integer, List<Item>> itemUser = new HashMap<>();
+    private static int id = 0;
     private final FakeUserDao fakeUserDao;
+
     @Autowired
     public ItemDao(FakeUserDao fakeUserDao) {
         this.fakeUserDao = fakeUserDao;
@@ -29,12 +30,12 @@ public class ItemDao {
         item.setId(++id);
         item.setOwner(owner);
         items.put(item.getId(), item);
-        if(itemUser.containsKey(owner.getId())){
+        if (itemUser.containsKey(owner.getId())) {
             itemUser.get(owner.getId()).add(item);
-        }else{
+        } else {
             List<Item> itemList = new ArrayList<>();
             itemList.add(item);
-            itemUser.put(owner.getId(),itemList);
+            itemUser.put(owner.getId(), itemList);
         }
 
         return item;
@@ -46,6 +47,7 @@ public class ItemDao {
         }
         return items.get(id);
     }
+
     public List<Item> getItemWithIdUser(int id) {
         if (!itemUser.containsKey(id)) {
             throw new NotFound(User.class, id);
@@ -56,17 +58,19 @@ public class ItemDao {
     public List<Item> getItems() {
         return new ArrayList<>(items.values());
     }
-    public Item updItem(int id, ItemDto itemDto,int idUser){
+
+    public Item updItem(int id, ItemDto itemDto, int idUser) {
         Item item = getItemWithId(id);
         if (!itemUser.containsKey(idUser)) {
             throw new NotFound(User.class, id);
         }
-        if(!itemUser.get(idUser).contains(item)){
+        if (!itemUser.get(idUser).contains(item)) {
             throw new NotFound(Item.class, id);
         }
-        item.setName(itemDto.getName()!=null&&!itemDto.getName().equals(item.getName())? itemDto.getName() : item.getName());
-        item.setDescription(itemDto.getDescription()!=null&&!itemDto.getDescription().equals(item.getDescription())?itemDto.getDescription():item.getDescription());
-        item.setAvailable(itemDto.getAvailable()!=null?itemDto.getAvailable():item.getAvailable());
+        item.setId(item.getId());
+        item.setName(itemDto.getName() != null && !itemDto.getName().equals(item.getName()) ? itemDto.getName() : item.getName());
+        item.setDescription(itemDto.getDescription() != null && !itemDto.getDescription().equals(item.getDescription()) ? itemDto.getDescription() : item.getDescription());
+        item.setAvailable(itemDto.getAvailable() != null ? itemDto.getAvailable() : item.getAvailable());
         item.setOwner(fakeUserDao.getUserById(idUser));
         return item;
     }

@@ -11,8 +11,8 @@ import ru.practicum.shareit.user.User;
 @Builder
 public class ItemDto {
     private final int id;
-    private  String name;
-    private  String description;
+    private String name;
+    private String description;
     private Boolean available;
     private final User owner;
 }
