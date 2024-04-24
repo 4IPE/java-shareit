@@ -10,9 +10,9 @@ import ru.practicum.shareit.user.User;
 @Data
 @Builder
 public class ItemDto {
-    private final int id;
+    private int id;
     private String name;
     private String description;
     private Boolean available;
-    private final User owner;
+    private User owner;
 }

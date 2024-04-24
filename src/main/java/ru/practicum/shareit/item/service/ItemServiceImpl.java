@@ -14,31 +14,33 @@ import java.util.stream.Collectors;
 @Service
 public class ItemServiceImpl implements ItemService {
     private final ItemDao itemDao;
+    private final ItemMapper itemMapper;
 
     @Autowired
     public ItemServiceImpl(ItemDao itemDao, ItemMapper itemMapper) {
         this.itemDao = itemDao;
+        this.itemMapper = itemMapper;
     }
 
     @Override
     public ItemDto addItem(Item item, int id) {
-        return ItemMapper.toItemDto(itemDao.addItem(item, id));
+        return itemMapper.toItemDto(itemDao.addItem(item, id));
     }
 
 
     @Override
     public ItemDto getItem(int id) {
-        return ItemMapper.toItemDto(itemDao.getItemWithId(id));
+        return itemMapper.toItemDto(itemDao.getItemWithId(id));
     }
 
     @Override
     public List<ItemDto> getItemWithIdUser(int id) {
-        return itemDao.getItemWithIdUser(id).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
+        return itemDao.getItemWithIdUser(id).stream().map(itemMapper::toItemDto).collect(Collectors.toList());
     }
 
     @Override
     public ItemDto editItem(int id, ItemDto item, int idUser) {
-        return ItemMapper.toItemDto(itemDao.updItem(id, item, idUser));
+        return itemMapper.toItemDto(itemDao.updItem(id, item, idUser));
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
         return itemDao.getItems().stream()
                 .filter(item -> item.getDescription().toLowerCase()
                         .contains(desc.toLowerCase()) && item.getAvailable())
-                .map(ItemMapper::toItemDto)
+                .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
 }

@@ -6,8 +6,6 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.List;
 
 public interface ItemService {
-
-
     ItemDto addItem(Item item, int id);
 
     ItemDto getItem(int id);
@@ -15,7 +13,6 @@ public interface ItemService {
 
     List<ItemDto> getItemWithIdUser(int id);
 
-    //TODO ДОДЕЛАТЬ
     ItemDto editItem(int id, ItemDto item, int idUser);
 
     List<ItemDto> search(String desc);

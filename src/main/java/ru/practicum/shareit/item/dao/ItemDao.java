@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 public class ItemDao {
 
-    HashMap<Integer, Item> items = new HashMap<>();
-    HashMap<Integer, List<Item>> itemUser = new HashMap<>();
+    private final HashMap<Integer, Item> items = new HashMap<>();
+    private final HashMap<Integer, List<Item>> itemUser = new HashMap<>();
     private static int id = 0;
     private final FakeUserDao fakeUserDao;
 

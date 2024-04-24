@@ -13,25 +13,27 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final FakeUserDao fakeUserDao;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(FakeUserDao fakeUserDao) {
+    public UserServiceImpl(FakeUserDao fakeUserDao, UserMapper userMapper) {
         this.fakeUserDao = fakeUserDao;
+        this.userMapper = userMapper;
     }
 
     @Override
     public UserDto addUser(User user) {
-        return UserMapper.toUserDto(fakeUserDao.addUser(user));
+        return userMapper.toUserDto(fakeUserDao.addUser(user));
     }
 
     @Override
     public UserDto getUserById(int id) {
-        return UserMapper.toUserDto(fakeUserDao.getUserById(id));
+        return userMapper.toUserDto(fakeUserDao.getUserById(id));
     }
 
     @Override
     public List<UserDto> getUsers() {
-        return fakeUserDao.getUserDao().values().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+        return fakeUserDao.getUserDao().values().stream().map(userMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Override
@@ -41,6 +43,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(int id, UserDto user) {
-        return UserMapper.toUserDto(fakeUserDao.update(id, user));
+        return userMapper.toUserDto(fakeUserDao.update(id, user));
     }
 }

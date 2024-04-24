@@ -1,7 +1,8 @@
 package ru.practicum.shareit.user;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -15,36 +16,33 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users")
 @Slf4j
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
-    public UserDto addUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) {
         log.info("Выполнен запрос к методу addUser" + user.toString());
-        return userService.addUser(user);
+        return ResponseEntity.ok().body(userService.addUser(user));
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable int userId) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable int userId) {
         log.info("Выполнен запрос к методу getUserById");
-        return userService.getUserById(userId);
+        return ResponseEntity.ok().body(userService.getUserById(userId));
     }
 
     @GetMapping
-    public List<UserDto> getUsers() {
+    public ResponseEntity<List<UserDto>> getUsers() {
         log.info("Выполнен запрос к методу getUsers");
-        return userService.getUsers();
+        return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @PatchMapping("/{userId}")
-    public UserDto updateUser(@PathVariable int userId, @Valid @RequestBody UserDto user) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable int userId, @Valid @RequestBody UserDto user) {
         log.info("Выполнен запрос к методу updateUser" + user.toString());
-        return userService.update(userId, user);
+        return ResponseEntity.ok().body(userService.update(userId, user));
     }
 
     @DeleteMapping("/{userId}")
