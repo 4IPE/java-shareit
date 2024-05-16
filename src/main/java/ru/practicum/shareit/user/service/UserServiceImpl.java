@@ -3,46 +3,48 @@ package ru.practicum.shareit.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.dao.FakeUserDao;
+import ru.practicum.shareit.user.dao.UserDao;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final FakeUserDao fakeUserDao;
+    private final UserDao userDao;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(FakeUserDao fakeUserDao, UserMapper userMapper) {
-        this.fakeUserDao = fakeUserDao;
+    public UserServiceImpl(UserDao userDao, UserMapper userMapper, UserRepository userRepository) {
+        this.userDao = userDao;
         this.userMapper = userMapper;
     }
 
     @Override
     public UserDto addUser(User user) {
-        return userMapper.toUserDto(fakeUserDao.addUser(user));
+        List<User> users = userDao.getAllUser();
+        return userMapper.toUserDto(userDao.addUser(user));
     }
 
     @Override
     public UserDto getUserById(int id) {
-        return userMapper.toUserDto(fakeUserDao.getUserById(id));
+        return userMapper.toUserDto(userDao.getUserById(id));
     }
 
     @Override
     public List<UserDto> getUsers() {
-        return fakeUserDao.getUserDao().values().stream().map(userMapper::toUserDto).collect(Collectors.toList());
+        return userDao.getAllUser().stream().map(userMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Override
     public void delUser(int id) {
-        fakeUserDao.delUser(id);
+        userDao.delUser(id);
     }
 
     @Override
     public UserDto update(int id, UserDto user) {
-        return userMapper.toUserDto(fakeUserDao.update(id, user));
+        return userMapper.toUserDto(userDao.update(id, user));
     }
 }

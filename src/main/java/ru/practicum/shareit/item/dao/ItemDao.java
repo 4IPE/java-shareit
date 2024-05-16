@@ -5,73 +5,48 @@ import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.model.NotFound;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.dao.FakeUserDao;
+import ru.practicum.shareit.user.dao.UserDao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
 public class ItemDao {
 
-    private final HashMap<Integer, Item> items = new HashMap<>();
-    private final HashMap<Integer, List<Item>> itemUser = new HashMap<>();
-    private static int id = 0;
-    private final FakeUserDao fakeUserDao;
+    private final ItemRepository itemRepository;
+    private final UserDao userDao;
 
     @Autowired
-    public ItemDao(FakeUserDao fakeUserDao) {
-        this.fakeUserDao = fakeUserDao;
+    public ItemDao(ItemRepository itemRepository, UserDao userDao) {
+        this.itemRepository = itemRepository;
+        this.userDao = userDao;
     }
 
     public Item addItem(Item item, Integer idUser) {
-        User owner = fakeUserDao.getUserById(idUser);
-        item.setId(++id);
-        item.setOwner(owner);
-        items.put(item.getId(), item);
-        if (itemUser.containsKey(owner.getId())) {
-            itemUser.get(owner.getId()).add(item);
-        } else {
-            List<Item> itemList = new ArrayList<>();
-            itemList.add(item);
-            itemUser.put(owner.getId(), itemList);
-        }
-
-        return item;
+        User owner = userDao.getUserById(idUser);
+        item.setOwnerId(owner.getId());
+        return itemRepository.save(item);
     }
 
     public Item getItemWithId(int id) {
-        if (!items.containsKey(id)) {
-            throw new NotFound(Item.class, id);
-        }
-        return items.get(id);
+        return itemRepository.findById(id).orElseThrow(()->new NotFound(Item.class,id));
     }
-
     public List<Item> getItemWithIdUser(int id) {
-        if (!itemUser.containsKey(id)) {
-            throw new NotFound(User.class, id);
-        }
-        return itemUser.get(id);
+        return itemRepository.findByOwnerId(id);
     }
 
     public List<Item> getItems() {
-        return new ArrayList<>(items.values());
+        return itemRepository.findAll();
     }
 
     public Item updItem(int id, ItemDto itemDto, int idUser) {
         Item item = getItemWithId(id);
-        if (!itemUser.containsKey(idUser)) {
-            throw new NotFound(User.class, id);
-        }
-        if (!itemUser.get(idUser).contains(item)) {
-            throw new NotFound(Item.class, id);
-        }
         item.setId(item.getId());
         item.setName(itemDto.getName() != null && !itemDto.getName().equals(item.getName()) ? itemDto.getName() : item.getName());
         item.setDescription(itemDto.getDescription() != null && !itemDto.getDescription().equals(item.getDescription()) ? itemDto.getDescription() : item.getDescription());
         item.setAvailable(itemDto.getAvailable() != null ? itemDto.getAvailable() : item.getAvailable());
-        item.setOwner(fakeUserDao.getUserById(idUser));
-        return item;
+        item.setOwnerId(userDao.getUserById(idUser).getId());
+        return itemRepository.save(item);
     }
 }

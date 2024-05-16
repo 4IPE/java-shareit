@@ -1,9 +1,9 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Builder;
 import lombok.Data;
-import ru.practicum.shareit.user.User;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -12,18 +12,24 @@ import javax.validation.constraints.NotNull;
  * TODO Sprint add-controllers.
  */
 @Data
-@Builder
+@NoArgsConstructor
+@Entity
+@Table(name = "items")
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull
     @NotEmpty
     @NotBlank
+    @Column(name = "name",nullable = false)
     private String name;
-    @NotNull
     @NotEmpty
     @NotBlank
+    @Column(name = "description",nullable = false)
     private String description;
     @NotNull
+    @Column(name = "available",nullable = false)
     private Boolean available;
-    private User owner;
+    @Column(name = "owner_id",nullable = false)
+    private Integer ownerId;
 }
