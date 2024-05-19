@@ -23,6 +23,6 @@ public class User {
     private  String name;
     @Email
     @NotNull
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private  String email;
 }

@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentInDto;
+import ru.practicum.shareit.item.dto.CommentOutDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
@@ -28,8 +29,8 @@ public class ItemController {
         return ResponseEntity.ok().body(itemService.addItem(item, idUser));
     }
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<CommentDto> addComment(@RequestBody Comment comment,@PathVariable int itemId){
-        return ResponseEntity.ok().body(itemService.addComment(comment, itemId));
+    public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable int itemId,@RequestHeader("X-Sharer-User-Id") Integer idUser){
+        return ResponseEntity.ok().body(itemService.addComment(comment, itemId,idUser));
     }
 
     @PatchMapping("/{itemId}")
@@ -39,8 +40,8 @@ public class ItemController {
 
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemDto> getItem(@PathVariable int itemId) {
-        return ResponseEntity.ok().body(itemService.getItem(itemId));
+    public ResponseEntity<ItemDto> getItem(@PathVariable int itemId,@RequestHeader(value = "X-Sharer-User-Id",required = false) int idUser) {
+        return ResponseEntity.ok().body(itemService.getItem(itemId,idUser));
     }
 
     @GetMapping

@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.dto.BookingInDto;
+import ru.practicum.shareit.booking.dto.BookingItemDto;
 import ru.practicum.shareit.booking.dto.BookingOutDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.user.mapper.UserMapper;
@@ -17,5 +18,7 @@ public interface BookingMapper {
     @Mapping(target = "booker",ignore = true)
     Booking toBooking(BookingInDto booking);
     BookingOutDto toBookingDto(Booking booking);
+    @Mapping(target = "bookerId",source = "booking.booker.id")
+    BookingItemDto toBookingItemDto(Booking booking);
 
 }

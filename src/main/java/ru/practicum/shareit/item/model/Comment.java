@@ -3,8 +3,13 @@ package ru.practicum.shareit.item.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -16,8 +21,12 @@ public class Comment {
     private int id;
     @Column(name = "text",nullable = false)
     private String text;
-    @Column(name = "items",nullable = false)
-    private int items;
-    @Column(name = "author",nullable = false)
-    private int author;
+    @ManyToOne
+    @JoinColumn(name = "item_id",nullable = false)
+    private Item item;
+    @ManyToOne
+    @JoinColumn(name = "author_id",nullable = false)
+    private User author;
+    @Transient
+    private LocalDateTime created;
 }

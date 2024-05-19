@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.dao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.model.NotFound;
+import ru.practicum.shareit.exception.model.UniqueEmail;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.repository.UserRepository;
