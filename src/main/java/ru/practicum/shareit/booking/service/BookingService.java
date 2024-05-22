@@ -51,7 +51,7 @@ public class BookingService {
             throw new NotEnoughRights("Не хватает прав");
         }
         if (app) {
-            if(b.getStatus().equals(StatusBooking.APPROVED)){
+            if (b.getStatus().equals(StatusBooking.APPROVED)) {
                 throw new AfterStatusUpdate("Повторное подтверждение");
             }
             b.setStatus(StatusBooking.APPROVED);
@@ -70,7 +70,6 @@ public class BookingService {
         return bookingMapper.toBookingDto(b);
     }
 
-    //Проблема ошибки
     public List<BookingOutDto> getAllBookingWithState(String state, Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFound(User.class, id));
         if (state.equals("ALL")) {
@@ -80,8 +79,9 @@ public class BookingService {
             return bookingRepository.getCurrentBooker(id, LocalDateTime.now()).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
 
         }
-        if (state.equals("**PAST**")) {
-            return bookingRepository.findByBooker_idAndStartIsBeforeOrderByStartDesc(id, LocalDateTime.now()).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
+        if (state.equals("PAST")) {
+            List<Booking> b = bookingRepository.getPastBooker(id);
+            return bookingRepository.getPastBooker(id).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
         }
         if (state.equals("FUTURE")) {
             return bookingRepository.findByBooker_idAndStartIsAfterOrderByStartDesc(id, LocalDateTime.now()).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
@@ -101,7 +101,7 @@ public class BookingService {
         throw new NotFoundArgumentStatus(state);
 
     }
-    //Проблема ошибки
+
     public List<BookingOutDto> getBookingOwnerWithState(String state, int id) {
         User owner = userRepository.findById(id).orElseThrow(() -> new NotFound(User.class, id));
         List<Item> ownerItem = itemRepository.findByOwnerId(id);
@@ -114,13 +114,13 @@ public class BookingService {
                     .collect(Collectors.toList());
         }
         if (state.equals("CURRENT")) {
-            return bookingRepository.getCurrentOwner(id, LocalDateTime.now()).stream()
+            return bookingRepository.getCurrentOwner(id).stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
 
         }
-        if (state.equals("**PAST**")) {
-            return bookingRepository.findByItem_ownerIdAndStartIsBeforeOrderByStartDesc(id, LocalDateTime.now()).stream()
+        if (state.equals("PAST")) {
+            return bookingRepository.getPastOwner(id).stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }

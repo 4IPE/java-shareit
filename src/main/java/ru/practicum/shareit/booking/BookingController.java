@@ -31,20 +31,23 @@ public class BookingController {
     public ResponseEntity<BookingOutDto> confirmationBooking(@PathVariable Integer bookingId,
                                                              @NotNull @RequestParam(name = "approved") Boolean app,
                                                              @RequestHeader("X-Sharer-User-Id") Integer idUser) {
-        return ResponseEntity.ok().body(bookingService.confirmation(bookingId, app,idUser));
+        return ResponseEntity.ok().body(bookingService.confirmation(bookingId, app, idUser));
     }
+
     @GetMapping("/{bookingId}")
     public ResponseEntity<BookingOutDto> getBookingById(@PathVariable Integer bookingId,
-                                                        @RequestHeader("X-Sharer-User-Id") Integer idUser){
-        return ResponseEntity.ok().body(bookingService.getBookingById(bookingId,idUser));
+                                                        @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+        return ResponseEntity.ok().body(bookingService.getBookingById(bookingId, idUser));
     }
+
     @GetMapping
-    public ResponseEntity<List<BookingOutDto>> getAllBookingWithState(@RequestParam(name = "state",required = false, defaultValue = "ALL") String state,
-                                                                      @RequestHeader("X-Sharer-User-Id") Integer idUser){
-        return ResponseEntity.ok().body(bookingService.getAllBookingWithState(state,idUser));
+    public ResponseEntity<List<BookingOutDto>> getAllBookingWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
+                                                                      @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+        return ResponseEntity.ok().body(bookingService.getAllBookingWithState(state, idUser));
     }
+
     @GetMapping("/owner")
-    public ResponseEntity<List<BookingOutDto>> getBookingOwnerWithState(@RequestParam(name = "state",required = false, defaultValue = "ALL") String state, @RequestHeader("X-Sharer-User-Id") int idUser){
-        return ResponseEntity.ok().body(bookingService.getBookingOwnerWithState(state,idUser));
+    public ResponseEntity<List<BookingOutDto>> getBookingOwnerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state, @RequestHeader("X-Sharer-User-Id") int idUser) {
+        return ResponseEntity.ok().body(bookingService.getBookingOwnerWithState(state, idUser));
     }
 }

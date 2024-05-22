@@ -12,5 +12,5 @@ public class CommentInDto {
     @NotEmpty
     @NotNull
     @NotBlank
-    private  String text;
+    private String text;
 }

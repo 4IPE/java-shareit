@@ -28,9 +28,10 @@ public class ItemController {
     public ResponseEntity<ItemDto> addItem(@Valid @RequestBody Item item, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
         return ResponseEntity.ok().body(itemService.addItem(item, idUser));
     }
+
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable int itemId,@RequestHeader("X-Sharer-User-Id") Integer idUser){
-        return ResponseEntity.ok().body(itemService.addComment(comment, itemId,idUser));
+    public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable int itemId, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+        return ResponseEntity.ok().body(itemService.addComment(comment, itemId, idUser));
     }
 
     @PatchMapping("/{itemId}")
@@ -40,8 +41,8 @@ public class ItemController {
 
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemDto> getItem(@PathVariable int itemId,@RequestHeader(value = "X-Sharer-User-Id",required = false) int idUser) {
-        return ResponseEntity.ok().body(itemService.getItem(itemId,idUser));
+    public ResponseEntity<ItemDto> getItem(@PathVariable int itemId, @RequestHeader(value = "X-Sharer-User-Id", required = false) int idUser) {
+        return ResponseEntity.ok().body(itemService.getItem(itemId, idUser));
     }
 
     @GetMapping

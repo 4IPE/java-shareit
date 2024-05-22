@@ -12,8 +12,8 @@ import ru.practicum.shareit.user.mapper.UserMapper;
         componentModel = "spring",
         uses = {CommentMapper.class, BookingMapper.class})
 public interface ItemMapper {
-    @Mapping(target = "nextBooking",ignore = true)
-    @Mapping(target = "lastBooking",ignore = true)
+    @Mapping(target = "nextBooking", ignore = true)
+    @Mapping(target = "lastBooking", ignore = true)
     ItemDto toItemDto(Item item);
 
     Item toItem(ItemDto item);

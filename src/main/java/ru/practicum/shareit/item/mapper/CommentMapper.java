@@ -12,10 +12,11 @@ import ru.practicum.shareit.user.mapper.UserMapper;
         componentModel = "spring",
         uses = {ItemMapper.class, UserMapper.class})
 public interface CommentMapper {
-    @Mapping(target = "authorName",source = "comment.author.name")
+    @Mapping(target = "authorName", source = "comment.author.name")
     CommentOutDto toCommentOutDto(Comment comment);
-    @Mapping(target = "item",ignore = true)
-    @Mapping(target = "author",ignore = true)
-    @Mapping(target = "created",ignore = true)
+
+    @Mapping(target = "item", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "created", ignore = true)
     Comment toComment(CommentInDto comment);
 }

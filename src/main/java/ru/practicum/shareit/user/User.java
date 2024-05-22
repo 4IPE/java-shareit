@@ -18,11 +18,11 @@ import javax.validation.constraints.NotNull;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int id;
-    @Column(name = "name",nullable = false)
-    private  String name;
+    private int id;
+    @Column(name = "name", nullable = false)
+    private String name;
     @Email
     @NotNull
-    @Column(name = "email",unique = true)
-    private  String email;
+    @Column(name = "email", unique = true)
+    private String email;
 }

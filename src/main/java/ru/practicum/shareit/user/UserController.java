@@ -21,6 +21,7 @@ import java.util.List;
 @Validated
 public class UserController {
     private final UserService userService;
+
     @PostMapping
     public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) {
         log.info("Выполнен запрос к методу addUser{}", user.toString());
