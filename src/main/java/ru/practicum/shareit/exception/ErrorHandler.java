@@ -56,7 +56,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> Date(final DateException e) {
+    public Map<String, String> dateExc(final DateException e) {
         return Map.of("DateException: ", e.getMessage());
     }
 
