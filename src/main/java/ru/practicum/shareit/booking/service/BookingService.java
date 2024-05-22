@@ -80,7 +80,6 @@ public class BookingService {
 
         }
         if (state.equals("PAST")) {
-            List<Booking> b = bookingRepository.getPastBooker(id);
             return bookingRepository.getPastBooker(id).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
         }
         if (state.equals("FUTURE")) {

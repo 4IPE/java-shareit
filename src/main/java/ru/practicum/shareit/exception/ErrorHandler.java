@@ -1,18 +1,12 @@
 package ru.practicum.shareit.exception;
 
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.model.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import java.util.Map;
 
 
