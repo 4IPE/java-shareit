@@ -1,7 +1,10 @@
 package ru.practicum.shareit.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +14,7 @@ import java.util.Map;
 
 
 @RestControllerAdvice
+@Slf4j
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -68,20 +72,27 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String,String> unknownStatus(final NotFoundArgumentStatus e) {
-        return Map.of("Error message","Unknown state:"+e.getMessage());
+    public ErrorResponse unknownStatus(final NotFoundArgumentStatus e) {
+        log.info("500 {}",e.getMessage());
+        return new ErrorResponse("Unknown state: "+e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handlerThrowable(final Throwable e) {
-        return new ErrorResponse("Произошла непредвиденная ошибка.", e);
+        log.info("500 {}",e.getClass());
+        return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleHttpMediaTypeNotAcceptableException() {
-        return Map.of("HttpMediaTypeNotAcceptableException", "ошибка");
+    public Map<String, String> handleMethodArgumentNotValidException() {
+        return Map.of("MethodArgumentNotValidException", "ошибка");
+    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleMissingServletRequestParameterException() {
+        return Map.of("MissingServletRequestParameterException", "ошибка");
     }
 
 }
