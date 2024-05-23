@@ -68,8 +68,8 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String unknownStatus(final NotFoundArgumentStatus e) {
-        return e.getMessage();
+    public Map<String,String> unknownStatus(final NotFoundArgumentStatus e) {
+        return Map.of("Error message","Unknown state:"+e.getMessage());
     }
 
     @ExceptionHandler
