@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.booking.enumarated.StatusBooking;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.CommentCreatedExp;
@@ -21,6 +22,7 @@ import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,16 +73,16 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto getItem(int id, int idUser) {
         ItemDto item = itemMapper.toItemDto(itemRepository.findById(id).orElseThrow(() -> new NotFound(Item.class, id)));
         if (item.getOwnerId() == idUser) {
-            item.setNextBooking(bookingRepository.findByItem_idAndEndIsAfterOrderByEnd(id, LocalDateTime.now())
-                    .stream()
+            List<Booking> bookings = bookingRepository.findByItem_idOrderByStart(item.getId());
+            item.setNextBooking(bookings.stream()
+                    .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && b.getStatus().equals(StatusBooking.APPROVED))
                     .findFirst()
-                    .map(bookingMapper::toBookingItemDto)
-                    .orElse(null));
-            item.setLastBooking(bookingRepository.findByItem_idAndEndIsBeforeOrderByEndDesc(id, LocalDateTime.now())
-                    .stream()
-                    .findFirst()
-                    .map(bookingMapper::toBookingItemDto)
-                    .orElse(null));
+                    .map(bookingMapper::toBookingItemDto).orElse(null));
+            List<Booking> bookings1 = bookings.stream().filter(b -> b.getStart().isBefore(LocalDateTime.now())).collect(Collectors.toList());
+            item.setLastBooking(bookings.stream()
+                    .filter(b -> b.getStart().isBefore(LocalDateTime.now()))
+                    .max(Comparator.comparing(Booking::getStart))
+                    .map(bookingMapper::toBookingItemDto).orElse(null));
         }
         List<CommentOutDto> c = commentRepository.findByItem_id(id).stream().map(commentMapper::toCommentOutDto).collect(Collectors.toList());
         c.forEach(commentOutDto -> commentOutDto.setCreated(LocalDateTime.now()));
