@@ -78,7 +78,6 @@ public class ItemServiceImpl implements ItemService {
                     .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && b.getStatus().equals(StatusBooking.APPROVED))
                     .findFirst()
                     .map(bookingMapper::toBookingItemDto).orElse(null));
-            List<Booking> bookings1 = bookings.stream().filter(b -> b.getStart().isBefore(LocalDateTime.now())).collect(Collectors.toList());
             item.setLastBooking(bookings.stream()
                     .filter(b -> b.getStart().isBefore(LocalDateTime.now()))
                     .max(Comparator.comparing(Booking::getStart))
