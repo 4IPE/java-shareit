@@ -17,44 +17,44 @@ import java.util.Map;
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> notFound(final NotFound notFound) {
-        return Map.of("NotFound: ", notFound.getMessage());
+    public Map<String, String> notFound(final NotFoundException notFoundException) {
+        return Map.of("NotFoundException: ", notFoundException.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> bookingFailCreate(final BookingCreateExp bookingCreateExp) {
-        return Map.of("BookingCreateExp: ", bookingCreateExp.getMessage());
+    public Map<String, String> bookingFailCreate(final BookingCreateException bookingCreateException) {
+        return Map.of("BookingCreateException: ", bookingCreateException.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> bookingFailCreate(final NotEnoughRights notEnoughRights) {
-        return Map.of("NotEnoughRights: ", notEnoughRights.getMessage());
+    public Map<String, String> bookingFailCreate(final NotEnoughRightsException notEnoughRightsException) {
+        return Map.of("NotEnoughRightsException: ", notEnoughRightsException.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> afterUpdateStatus(final AfterStatusUpdate e) {
-        return Map.of("AfterStatusUpdate: ", e.getMessage());
+    public Map<String, String> afterUpdateStatus(final AfterStatusUpdateException e) {
+        return Map.of("AfterStatusUpdateException: ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> commentCreatedFail(final CommentCreatedExp e) {
-        return Map.of("CommentCreatedExp: ", e.getMessage());
+    public Map<String, String> commentCreatedFail(final CommentCreatedException e) {
+        return Map.of("CommentCreatedException: ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> uniqueEmail(final UniqueEmail uniqueEmail) {
-        return Map.of("UniqueEmail: ", uniqueEmail.getMessage());
+    public Map<String, String> uniqueEmail(final UniqueEmailException uniqueEmailException) {
+        return Map.of("UniqueEmailException: ", uniqueEmailException.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> noAvailable(final NoAvailable e) {
-        return Map.of("NoAvailable: ", e.getMessage());
+    public Map<String, String> noAvailable(final NoAvailableException e) {
+        return Map.of("NoAvailableException: ", e.getMessage());
     }
 
     @ExceptionHandler
@@ -71,7 +71,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse unknownStatus(final NotFoundArgumentStatus e) {
+    public ErrorResponse unknownStatus(final NotFoundArgumentStatusException e) {
         log.info("500 {}", e.getMessage());
         return new ErrorResponse("Unknown state: " + e.getMessage());
     }

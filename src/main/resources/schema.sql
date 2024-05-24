@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS items (
   description VARCHAR(255) NOT NULL,
   available boolean ,
   owner_id BIGINT NOT NULL,
+  CONSTRAINT fk_items_to_users FOREIGN KEY(owner_id) REFERENCES users(id),
   CONSTRAINT pk_items PRIMARY KEY (id)
  );
  CREATE TABLE IF NOT EXISTS bookings (

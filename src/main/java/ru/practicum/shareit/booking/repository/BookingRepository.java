@@ -47,11 +47,11 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "ORDER BY END_DATE DESC", nativeQuery = true)
     List<Booking> getPastBooker(Integer id);
 
-    List<Booking> findByItem_ownerIdAndStatusOrderByStartDesc(Integer id, StatusBooking status);
+    List<Booking> findByItem_ownerId_idAndStatusOrderByStartDesc(Integer id, StatusBooking status);
 
-    List<Booking> findByItem_ownerIdAndStartIsAfterOrderByStartDesc(Integer id, LocalDateTime now);
+    List<Booking> findByItem_ownerId_idAndStartIsAfterOrderByStartDesc(Integer id, LocalDateTime now);
 
-    List<Booking> findByItem_ownerIdOrderByStartDesc(Integer id);
+    List<Booking> findByItem_ownerId_idOrderByStartDesc(Integer id);
 
     List<Booking> findByItem_idOrderByStart(Integer id);
 

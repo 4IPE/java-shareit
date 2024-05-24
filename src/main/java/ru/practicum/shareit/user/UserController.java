@@ -50,5 +50,6 @@ public class UserController {
     public void deleteUser(@PathVariable int userId) {
         log.info("Выполнен запрос к методу deleteUser");
         userService.delUser(userId);
+        ResponseEntity.noContent().build();
     }
 }

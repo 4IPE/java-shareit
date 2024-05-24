@@ -6,8 +6,8 @@ import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.enumarated.StatusBooking;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.exception.model.CommentCreatedExp;
-import ru.practicum.shareit.exception.model.NotFound;
+import ru.practicum.shareit.exception.model.CommentCreatedException;
+import ru.practicum.shareit.exception.model.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentInDto;
 import ru.practicum.shareit.item.dto.CommentOutDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -39,28 +39,28 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addItem(Item item, int id) {
-        User owner = userRepository.findById(id).orElseThrow(() -> new NotFound(User.class, id));
-        item.setOwnerId(owner.getId());
+        User owner = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+        item.setOwnerId(owner);
         return itemMapper.toItemDto(itemRepository.save(item));
     }
 
     @Override
     public CommentOutDto addComment(CommentInDto comment, int idItem, int idUser) {
-        Item item = itemRepository.findById(idItem).orElseThrow(() -> new NotFound(Item.class, idItem));
-        User user = userRepository.findById(idUser).orElseThrow(() -> new NotFound(User.class, idUser));
+        Item item = itemRepository.findById(idItem).orElseThrow(() -> new NotFoundException(Item.class, idItem));
+        User user = userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser));
         List<Item> items = bookingRepository.findByItem_idAndEndIsBeforeOrderByEndDesc(idItem, LocalDateTime.now())
                 .stream()
                 .filter(booking -> booking.getBooker().getId() == idUser)
                 .map(Booking::getItem)
                 .collect(Collectors.toList());
-        if (item.getOwnerId() == idUser) {
-            throw new CommentCreatedExp("Владелец вещи не может оставлять комментарии");
+        if (item.getOwnerId().getId() == idUser) {
+            throw new CommentCreatedException("Владелец вещи не может оставлять комментарии");
         }
         if (bookingRepository.findByBooker_idAndItem_id(idUser, idItem).isEmpty()) {
-            throw new CommentCreatedExp("Вы не можете оставлять отзыв так как не пользовались вещью");
+            throw new CommentCreatedException("Вы не можете оставлять отзыв так как не пользовались вещью");
         }
         if (!items.contains(item)) {
-            throw new CommentCreatedExp("Нельзя оставлять комментарии при бронировании в будущем");
+            throw new CommentCreatedException("Нельзя оставлять комментарии при бронировании в будущем");
         }
         Comment c = commentMapper.toComment(comment);
         c.setItem(item);
@@ -71,8 +71,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getItem(int id, int idUser) {
-        ItemDto item = itemMapper.toItemDto(itemRepository.findById(id).orElseThrow(() -> new NotFound(Item.class, id)));
-        if (item.getOwnerId() == idUser) {
+        ItemDto item = itemMapper.toItemDto(itemRepository.findById(id).orElseThrow(() -> new NotFoundException(Item.class, id)));
+        if (item.getOwnerId().getId() == idUser) {
             List<Booking> bookings = bookingRepository.findByItem_idOrderByStart(item.getId());
             item.setNextBooking(bookings.stream()
                     .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && b.getStatus().equals(StatusBooking.APPROVED))
@@ -91,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getItemWithIdUser(int id) {
-        List<ItemDto> itemDto = itemRepository.findByOwnerId(id)
+        List<ItemDto> itemDto = itemRepository.findByOwnerId_id(id)
                 .stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
@@ -114,12 +114,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto editItem(int id, ItemDto itemDto, int idUser) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new NotFound(Item.class, id));
+        Item item = itemRepository.findById(id).orElseThrow(() -> new NotFoundException(Item.class, id));
         item.setId(item.getId());
         item.setName(itemDto.getName() != null && !itemDto.getName().equals(item.getName()) ? itemDto.getName() : item.getName());
         item.setDescription(itemDto.getDescription() != null && !itemDto.getDescription().equals(item.getDescription()) ? itemDto.getDescription() : item.getDescription());
         item.setAvailable(itemDto.getAvailable() != null ? itemDto.getAvailable() : item.getAvailable());
-        item.setOwnerId(userRepository.findById(idUser).orElseThrow(() -> new NotFound(User.class, idUser)).getId());
+        item.setOwnerId(userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser)));
         return itemMapper.toItemDto(itemRepository.save(item));
     }
 
