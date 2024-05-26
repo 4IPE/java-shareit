@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -17,13 +18,13 @@ import java.util.List;
 @RequestMapping(path = "/users")
 @Slf4j
 @RequiredArgsConstructor
+@Validated
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping
     public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) {
-        log.info("Выполнен запрос к методу addUser" + user.toString());
+        log.info("Выполнен запрос к методу addUser{}", user.toString());
         return ResponseEntity.ok().body(userService.addUser(user));
     }
 
@@ -41,7 +42,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable int userId, @Valid @RequestBody UserDto user) {
-        log.info("Выполнен запрос к методу updateUser" + user.toString());
+        log.info("Выполнен запрос к методу updateUser{}", user.toString());
         return ResponseEntity.ok().body(userService.update(userId, user));
     }
 
@@ -49,5 +50,6 @@ public class UserController {
     public void deleteUser(@PathVariable int userId) {
         log.info("Выполнен запрос к методу deleteUser");
         userService.delUser(userId);
+        ResponseEntity.noContent().build();
     }
 }

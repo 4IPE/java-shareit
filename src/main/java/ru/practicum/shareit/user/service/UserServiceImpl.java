@@ -1,48 +1,48 @@
 package ru.practicum.shareit.user.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.model.NotFoundException;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.dao.FakeUserDao;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final FakeUserDao fakeUserDao;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    @Autowired
-    public UserServiceImpl(FakeUserDao fakeUserDao, UserMapper userMapper) {
-        this.fakeUserDao = fakeUserDao;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public UserDto addUser(User user) {
-        return userMapper.toUserDto(fakeUserDao.addUser(user));
+        return userMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
     public UserDto getUserById(int id) {
-        return userMapper.toUserDto(fakeUserDao.getUserById(id));
+        return userMapper.toUserDto(userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id)));
     }
 
     @Override
     public List<UserDto> getUsers() {
-        return fakeUserDao.getUserDao().values().stream().map(userMapper::toUserDto).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(userMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Override
     public void delUser(int id) {
-        fakeUserDao.delUser(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public UserDto update(int id, UserDto user) {
-        return userMapper.toUserDto(fakeUserDao.update(id, user));
+        User userNew = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+        userNew.setName(user.getName() != null ? user.getName() : userNew.getName());
+        userNew.setEmail(user.getEmail() != null ? user.getEmail() : userNew.getEmail());
+        return userMapper.toUserDto(userRepository.save(userNew));
     }
 }
