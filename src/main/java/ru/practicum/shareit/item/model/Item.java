@@ -34,4 +34,6 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User ownerId;
+    @Column(name = "request_id")
+    private Integer requestId;
 }

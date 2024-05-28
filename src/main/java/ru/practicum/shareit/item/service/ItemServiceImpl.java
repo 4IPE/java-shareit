@@ -17,6 +17,8 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,11 +39,24 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final UserRepository userRepository;
+    private final RequestRepository requestRepository;
+    private static List<ItemRequest> requestsFind;
 
     @Override
     public ItemDto addItem(Item item, int id) {
         User owner = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
         item.setOwnerId(owner);
+        List<ItemRequest>  requestsFind = requestRepository.findAll();
+        if(!requestsFind.isEmpty()){
+            String[] split = item.getName().split(" ");
+            for(String s:split){
+                requestsFind = requestsFind.stream()
+                        .filter((r) -> r.getDescription().toLowerCase().contains(s.toLowerCase().substring(0, s.length() - 2)))
+                        .collect(Collectors.toList());
+            }
+            item.setRequestId(Objects.requireNonNull(requestsFind.stream().findFirst().orElse(null)).getId());
+            requestsFind = null;
+        }
         return itemMapper.toItemDto(itemRepository.save(item));
     }
 

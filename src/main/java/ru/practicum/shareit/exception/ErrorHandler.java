@@ -79,14 +79,14 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handlerThrowable(final Throwable e) {
-        log.info("500 {}", e.getClass());
+        log.info("500 {}", e.getClass()+"   "+e.getMessage());
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleMethodArgumentNotValidException() {
-        return Map.of("MethodArgumentNotValidException", "ошибка");
+        return Map.of("MethodArgumentNotValidException", "Валидация объекта не прошла");
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

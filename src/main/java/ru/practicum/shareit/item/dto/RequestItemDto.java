@@ -14,14 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ItemDto {
+public class RequestItemDto {
     private int id;
     private String name;
     private String description;
     private Boolean available;
-    private UserDto ownerId;
-    private BookingItemDto lastBooking;
-    private BookingItemDto nextBooking;
-    private List<CommentOutDto> comments;
     private Integer requestId;
 }
