@@ -5,7 +5,6 @@ import lombok.Setter;
 import ru.practicum.shareit.item.dto.RequestItemDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * TODO Sprint add-item-requests.

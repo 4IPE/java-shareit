@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,22 +26,25 @@ public class ItemRequestController {
 
     @PostMapping
     public ResponseEntity<ItemRequestOutDto> addRequest(@Valid @RequestBody ItemRequestInDto itemRequest,
-                                                        @RequestHeader("X-Sharer-User-Id") int idRequester){
-        return ResponseEntity.ok().body(requestService.addRequest(itemRequest,idRequester));
+                                                        @RequestHeader("X-Sharer-User-Id") int idRequester) {
+        return ResponseEntity.ok().body(requestService.addRequest(itemRequest, idRequester));
     }
+
     @GetMapping
-    public ResponseEntity<List<ItemRequestOutDto>> getRequestWithIdUser(@RequestHeader("X-Sharer-User-Id") int idRequester){
+    public ResponseEntity<List<ItemRequestOutDto>> getRequestWithIdUser(@RequestHeader("X-Sharer-User-Id") int idRequester) {
         return ResponseEntity.ok().body(requestService.getRequestWithIdUser(idRequester));
     }
+
     @GetMapping("/all")
-    public ResponseEntity<List<ItemRequestOutDto>> getAllRequest(@Min(value = 0)@RequestParam int from,
-                                                                 @Min(value = 1)@RequestParam int size,
-                                                                 @RequestHeader("X-Sharer-User-Id") int idRequester){
-        return ResponseEntity.ok().body(requestService.getAllRequest(from,size,idRequester));
+    public ResponseEntity<List<ItemRequestOutDto>> getAllRequest(@Min(value = 0) @RequestParam int from,
+                                                                 @Min(value = 1) @RequestParam int size,
+                                                                 @RequestHeader("X-Sharer-User-Id") int idRequester) {
+        return ResponseEntity.ok().body(requestService.getAllRequest(from, size, idRequester));
     }
+
     @GetMapping("/{requestId}")
     public ResponseEntity<ItemRequestOutDto> getRequestWithId(@RequestHeader("X-Sharer-User-Id") int idRequester,
-                                                              @RequestBody int requestId){
-        return ResponseEntity.ok().body(requestService.getRequestWithId(idRequester,requestId));
+                                                              @RequestBody int requestId) {
+        return ResponseEntity.ok().body(requestService.getRequestWithId(idRequester, requestId));
     }
 }

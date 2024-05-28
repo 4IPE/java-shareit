@@ -16,7 +16,6 @@ import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +41,18 @@ public class RequestServiceImpl implements RequestService {
         return null;
     }
 
-    public ItemRequestOutDto getRequestWithId(int idUser,int requestId){
-        User user = userRepository.findById(idUser).orElseThrow(()->new NotFoundException(User.class,idUser));
-        ItemRequest itemRequest = requestRepository.findById(requestId).orElseThrow(()->new NotFoundException(ItemRequest.class,requestId));
+    public ItemRequestOutDto getRequestWithId(int idUser, int requestId) {
+        User user = userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser));
+        ItemRequest itemRequest = requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException(ItemRequest.class, requestId));
         itemRequest.setCreated(LocalDateTime.now());
         Item item = itemRepository.findByRequestId(itemRequest.getId());
         ItemRequestOutDto itemRequestOutDto = requestMapper.toItemRequestOutDto(itemRequest);
         itemRequestOutDto.setItems(itemMapper.toRequestItemDto(item));
         return itemRequestOutDto;
     }
-    public List<ItemRequestOutDto> getAllRequest(int from,int size,int idRequester){
-            return null;
+
+    public List<ItemRequestOutDto> getAllRequest(int from, int size, int idRequester) {
+        return null;
     }
 
 }
