@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface RequestService {
     ItemRequestOutDto addRequest(ItemRequestInDto itemRequestInDto, Integer idUser);
+
     List<ItemRequestOutDto> getRequestWithIdUser(int idUser);
-    ItemRequestOutDto getRequestWithId(int idUser,int requestId);
-    List<ItemRequestOutDto> getAllRequest(int from,int size,int idRequester);
+
+    ItemRequestOutDto getRequestWithId(int idUser, int requestId);
+
+    List<ItemRequestOutDto> getAllRequest(Integer from, Integer size, Integer idRequester);
 }

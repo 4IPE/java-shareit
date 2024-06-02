@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.enumarated.StatusBooking;
@@ -46,10 +48,10 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto addItem(Item item, int id) {
         User owner = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
         item.setOwnerId(owner);
-        List<ItemRequest>  requestsFind = requestRepository.findAll();
-        if(!requestsFind.isEmpty()){
+        List<ItemRequest> requestsFind = requestRepository.findAll();
+        if (!requestsFind.isEmpty()) {
             String[] split = item.getName().split(" ");
-            for(String s:split){
+            for (String s : split) {
                 requestsFind = requestsFind.stream()
                         .filter((r) -> r.getDescription().toLowerCase().contains(s.toLowerCase().substring(0, s.length() - 2)))
                         .collect(Collectors.toList());
@@ -106,8 +108,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemWithIdUser(int id) {
-        List<ItemDto> itemDto = itemRepository.findByOwnerId_id(id)
+    public List<ItemDto> getItemWithIdUser(int id, Integer from, Integer size) {
+        int page = from / size;
+        Pageable pageable = PageRequest.of(page, size);
+        List<ItemDto> itemDto = itemRepository.findByOwnerId_id(id, pageable)
                 .stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
@@ -140,11 +144,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(String desc) {
+    public List<ItemDto> search(String desc, Integer from, Integer size) {
+        int page = from / size;
+        Pageable pageable = PageRequest.of(page, size);
         if (desc == null || desc.isBlank() || desc.isEmpty()) {
             return new ArrayList<>();
         }
-        return itemRepository.findAll().stream()
+        return itemRepository.findAll(pageable).stream()
                 .filter(item -> item.getDescription().toLowerCase()
                         .contains(desc.toLowerCase()) && item.getAvailable())
                 .map(itemMapper::toItemDto)

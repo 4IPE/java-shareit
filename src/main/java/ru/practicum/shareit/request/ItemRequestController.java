@@ -13,9 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
-/**
- * TODO Sprint add-item-requests.
- */
+
 @RestController
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
@@ -36,15 +34,15 @@ public class ItemRequestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ItemRequestOutDto>> getAllRequest(@Min(value = 0) @RequestParam int from,
-                                                                 @Min(value = 1) @RequestParam int size,
+    public ResponseEntity<List<ItemRequestOutDto>> getAllRequest(@Min(value = 0) @RequestParam(required = false) Integer from,
+                                                                 @Min(value = 1) @RequestParam(required = false) Integer size,
                                                                  @RequestHeader("X-Sharer-User-Id") int idRequester) {
         return ResponseEntity.ok().body(requestService.getAllRequest(from, size, idRequester));
     }
 
     @GetMapping("/{requestId}")
     public ResponseEntity<ItemRequestOutDto> getRequestWithId(@RequestHeader("X-Sharer-User-Id") int idRequester,
-                                                              @RequestBody int requestId) {
+                                                              @PathVariable int requestId) {
         return ResponseEntity.ok().body(requestService.getRequestWithId(idRequester, requestId));
     }
 }

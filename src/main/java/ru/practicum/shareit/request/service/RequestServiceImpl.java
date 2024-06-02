@@ -1,6 +1,9 @@
 package ru.practicum.shareit.request.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.model.NotFoundException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -15,7 +18,9 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,22 +42,35 @@ public class RequestServiceImpl implements RequestService {
 
     public List<ItemRequestOutDto> getRequestWithIdUser(int idUser) {
         User user = userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser));
-        List<ItemRequest> requests = requestRepository.findByRequestor_id(idUser);
-        return null;
+        List<ItemRequestOutDto> requests = requestRepository.findByRequestor_id(idUser).stream()
+                .map(requestMapper::toItemRequestOutDto)
+                .collect(Collectors.toList());
+        List<ItemRequestOutDto> reques = requests;
+        requests.forEach(request->request.setItems(itemRepository.findByRequestId(request.getId()).stream()
+                .map(itemMapper::toRequestItemDto)
+                .collect(Collectors.toList())));
+        return requests;
     }
 
     public ItemRequestOutDto getRequestWithId(int idUser, int requestId) {
         User user = userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser));
         ItemRequest itemRequest = requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException(ItemRequest.class, requestId));
-        itemRequest.setCreated(LocalDateTime.now());
-        Item item = itemRepository.findByRequestId(itemRequest.getId());
+        List<Item> items = itemRepository.findByRequestId(itemRequest.getId());
         ItemRequestOutDto itemRequestOutDto = requestMapper.toItemRequestOutDto(itemRequest);
-        itemRequestOutDto.setItems(itemMapper.toRequestItemDto(item));
+        itemRequestOutDto.setItems(items.stream().map(itemMapper::toRequestItemDto).collect(Collectors.toList()));
         return itemRequestOutDto;
     }
 
-    public List<ItemRequestOutDto> getAllRequest(int from, int size, int idRequester) {
-        return null;
+    public List<ItemRequestOutDto> getAllRequest(Integer from, Integer size, Integer idRequester) {
+        if(from==null||size==null){
+            return new ArrayList<>();
+        }
+        User user = userRepository.findById(idRequester).orElseThrow(() -> new NotFoundException(User.class, idRequester));
+        int page = from / size;
+        Pageable pageable = PageRequest.of(page,size, Sort.by(Sort.Order.asc("created")));
+        List<ItemRequestOutDto> requests = requestRepository.findAll(pageable).stream().filter(req->req.getRequestor().getId()!=idRequester).map(requestMapper::toItemRequestOutDto).collect(Collectors.toList());
+        requests.forEach(request ->request.setItems(itemRepository.findByRequestId(request.getId()).stream().map(itemMapper::toRequestItemDto).collect(Collectors.toList())));
+        return requests;
     }
 
 }

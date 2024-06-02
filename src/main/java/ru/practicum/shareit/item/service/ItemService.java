@@ -15,9 +15,9 @@ public interface ItemService {
     ItemDto getItem(int id, int idUser);
 
 
-    List<ItemDto> getItemWithIdUser(int id);
+    List<ItemDto> getItemWithIdUser(int id, Integer from, Integer size);
 
     ItemDto editItem(int id, ItemDto item, int idUser);
 
-    List<ItemDto> search(String desc);
+    List<ItemDto> search(String desc, Integer from, Integer size);
 }

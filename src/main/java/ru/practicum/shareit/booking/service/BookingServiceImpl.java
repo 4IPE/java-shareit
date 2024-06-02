@@ -1,6 +1,10 @@
 package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.dto.BookingInDto;
@@ -15,6 +19,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,30 +75,55 @@ public class BookingServiceImpl implements BookingService {
         return bookingMapper.toBookingDto(b);
     }
 
-    public List<BookingOutDto> getAllBookingWithState(String state, Integer id) {
+    public List<BookingOutDto> getAllBookingWithState(String state, Integer id, Integer from, Integer size) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
+        int page  = from/size;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("start")));
+        Pageable pageableTime = PageRequest.of(from, size);
         if (state.equals("ALL")) {
-            return bookingRepository.findByBooker_idOrderByStartDesc(id).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
+            Page<Booking> bookings = bookingRepository.findByBooker_id(id, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
         }
         if (state.equals("CURRENT")) {
-            return bookingRepository.getCurrentBooker(id, LocalDateTime.now()).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
+            Page<Booking> bookings = bookingRepository.getCurrentBooker(id, pageableTime);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
 
         }
         if (state.equals("PAST")) {
-            return bookingRepository.getPastBooker(id).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
+            Page<Booking> bookings = bookingRepository.getPastBooker(id, pageableTime);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
         }
         if (state.equals("FUTURE")) {
-            return bookingRepository.findByBooker_idAndStartIsAfterOrderByStartDesc(id, LocalDateTime.now()).stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
+            Page<Booking> bookings = bookingRepository.findByBooker_idAndStartIsAfter(id, LocalDateTime.now(), pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream().map(bookingMapper::toBookingDto).collect(Collectors.toList());
         }
         if (state.equals("WAITING")) {
-            return bookingRepository.findByStatusAndBooker_idOrderByStartDesc(StatusBooking.WAITING, id)
-                    .stream()
+            Page<Booking> bookings = bookingRepository.findByStatusAndBooker_id(StatusBooking.WAITING, id, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         if (state.equals("REJECTED")) {
-            return bookingRepository.findByStatusAndBooker_idOrderByStartDesc(StatusBooking.REJECTED, id)
-                    .stream()
+            Page<Booking> bookings = bookingRepository.findByStatusAndBooker_id(StatusBooking.REJECTED, id, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
@@ -101,44 +131,71 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
-    public List<BookingOutDto> getBookingOwnerWithState(String state, int id) {
+
+    public List<BookingOutDto> getBookingOwnerWithState(String state, Integer id, Integer from, Integer size) {
         User owner = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
         List<Item> ownerItem = itemRepository.findByOwnerId_id(id);
         if (ownerItem.isEmpty()) {
             throw new ZeroItemsException("У пользователя отстуствуют вещи");
         }
+        int page = from / size;
+        Pageable pageableTime = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("start")));
         if (state.equals("ALL")) {
-            return bookingRepository.findByItem_ownerId_idOrderByStartDesc(id).stream()
+            Page<Booking> bookings = bookingRepository.findByItem_ownerId_id(id, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         if (state.equals("CURRENT")) {
-            return bookingRepository.getCurrentOwner(id).stream()
+            Page<Booking> bookings = bookingRepository.getCurrentOwner(id, pageableTime);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
 
         }
         if (state.equals("PAST")) {
-            return bookingRepository.getPastOwner(id).stream()
+            Page<Booking> bookings = bookingRepository.getPastOwner(id, pageableTime);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         if (state.equals("FUTURE")) {
-            return bookingRepository.findByItem_ownerId_idAndStartIsAfterOrderByStartDesc(id, LocalDateTime.now()).stream()
+            Page<Booking> bookings = bookingRepository.findByItem_ownerId_idAndStartIsAfter(id, LocalDateTime.now(), pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         if (state.equals("WAITING")) {
-            return bookingRepository.findByItem_ownerId_idAndStatusOrderByStartDesc(id, StatusBooking.WAITING).stream()
+            Page<Booking> bookings = bookingRepository.findByItem_ownerId_idAndStatus(id, StatusBooking.WAITING, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         if (state.equals("REJECTED")) {
-            return bookingRepository.findByItem_ownerId_idAndStatusOrderByStartDesc(id, StatusBooking.REJECTED).stream()
+            Page<Booking> bookings = bookingRepository.findByItem_ownerId_idAndStatus(id, StatusBooking.REJECTED, pageable);
+            if (bookings == null || bookings.isEmpty()) {
+                return Collections.emptyList();
+            }
+            return bookings.stream()
                     .map(bookingMapper::toBookingDto)
                     .collect(Collectors.toList());
         }
         throw new NotFoundArgumentStatusException(state);
-
     }
 }
