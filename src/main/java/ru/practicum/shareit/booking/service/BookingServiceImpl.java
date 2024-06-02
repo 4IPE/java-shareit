@@ -77,7 +77,7 @@ public class BookingServiceImpl implements BookingService {
 
     public List<BookingOutDto> getAllBookingWithState(String state, Integer id, Integer from, Integer size) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
-        int page  = from/size;
+        int page = from / size;
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("start")));
         Pageable pageableTime = PageRequest.of(from, size);
         if (state.equals("ALL")) {

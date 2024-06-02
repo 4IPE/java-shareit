@@ -8,8 +8,9 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
-@RequiredArgsConstructor(onConstructor_ =@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ItemMapperTest {
 
     private final ItemMapper itemMapper;
@@ -34,8 +35,9 @@ public class ItemMapperTest {
         assertThat(itemDto.getOwnerId().getId()).isEqualTo(user.getId());
         assertThat(itemDto.getAvailable()).isEqualTo(item.getAvailable());
     }
+
     @Test
-    void toRequestItemDtoTest(){
+    void toRequestItemDtoTest() {
         User user = new User();
         user.setId(1);
         user.setName("Dan");

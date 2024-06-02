@@ -32,7 +32,6 @@ public class RequestServiceTest {
     private ItemRepository itemRepository;
 
 
-
     private User user;
     private Item item;
     private ItemRequest request;
@@ -47,7 +46,7 @@ public class RequestServiceTest {
         requestMapper = mock(RequestMapper.class);
         itemMapper = mock(ItemMapper.class);
         when(requestRepository.save(any())).thenReturn(ItemRequestOutDto.class);
-        requestService = new RequestServiceImpl(requestRepository,userRepository,requestMapper,itemRepository,itemMapper);
+        requestService = new RequestServiceImpl(requestRepository, userRepository, requestMapper, itemRepository, itemMapper);
         user = new User();
         user.setName("User");
         user.setId(1);
@@ -69,6 +68,7 @@ public class RequestServiceTest {
         request.setDescription("des");
         request.setRequestor(requestUser);
     }
+
     @Test
     void getRequestWithIdUserTest() {
         when(userRepository.findById(requestUser.getId())).thenReturn(Optional.of(requestUser));

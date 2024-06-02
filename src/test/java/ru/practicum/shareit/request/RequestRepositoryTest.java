@@ -23,19 +23,21 @@ public class RequestRepositoryTest {
 
     private User user;
     private ItemRequest request;
+
     @BeforeEach
-    void setUp(){
-        this.user = createUser("User","user@g.ru");
+    void setUp() {
+        this.user = createUser("User", "user@g.ru");
         this.request = createRequest("item des");
     }
 
-    private User createUser(String name,String email){
+    private User createUser(String name, String email) {
         User userCreate = new User();
         userCreate.setEmail(email);
         userCreate.setName(name);
         return userRepository.save(userCreate);
     }
-    private ItemRequest createRequest(String des){
+
+    private ItemRequest createRequest(String des) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setDescription(des);
         itemRequest.setCreated(LocalDateTime.now());

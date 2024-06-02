@@ -12,9 +12,10 @@ import ru.practicum.shareit.request.dto.ItemRequestOutDto;
         componentModel = "spring",
         uses = {ItemMapper.class})
 public interface RequestMapper {
-    @Mapping(target = "requestor",ignore = true)
-    @Mapping(target = "created",ignore = true)
+    @Mapping(target = "requestor", ignore = true)
+    @Mapping(target = "created", ignore = true)
     ItemRequest toItemRequest(ItemRequestInDto iri);
-    ItemRequestOutDto toItemRequestOutDto (ItemRequest ir);
+
+    ItemRequestOutDto toItemRequestOutDto(ItemRequest ir);
 
 }

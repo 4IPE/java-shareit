@@ -46,7 +46,7 @@ public class RequestServiceImpl implements RequestService {
                 .map(requestMapper::toItemRequestOutDto)
                 .collect(Collectors.toList());
         List<ItemRequestOutDto> reques = requests;
-        requests.forEach(request->request.setItems(itemRepository.findByRequestId(request.getId()).stream()
+        requests.forEach(request -> request.setItems(itemRepository.findByRequestId(request.getId()).stream()
                 .map(itemMapper::toRequestItemDto)
                 .collect(Collectors.toList())));
         return requests;
@@ -62,14 +62,14 @@ public class RequestServiceImpl implements RequestService {
     }
 
     public List<ItemRequestOutDto> getAllRequest(Integer from, Integer size, Integer idRequester) {
-        if(from==null||size==null){
+        if (from == null || size == null) {
             return new ArrayList<>();
         }
         User user = userRepository.findById(idRequester).orElseThrow(() -> new NotFoundException(User.class, idRequester));
         int page = from / size;
-        Pageable pageable = PageRequest.of(page,size, Sort.by(Sort.Order.asc("created")));
-        List<ItemRequestOutDto> requests = requestRepository.findAll(pageable).stream().filter(req->req.getRequestor().getId()!=idRequester).map(requestMapper::toItemRequestOutDto).collect(Collectors.toList());
-        requests.forEach(request ->request.setItems(itemRepository.findByRequestId(request.getId()).stream().map(itemMapper::toRequestItemDto).collect(Collectors.toList())));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("created")));
+        List<ItemRequestOutDto> requests = requestRepository.findAll(pageable).stream().filter(req -> req.getRequestor().getId() != idRequester).map(requestMapper::toItemRequestOutDto).collect(Collectors.toList());
+        requests.forEach(request -> request.setItems(itemRepository.findByRequestId(request.getId()).stream().map(itemMapper::toRequestItemDto).collect(Collectors.toList())));
         return requests;
     }
 
