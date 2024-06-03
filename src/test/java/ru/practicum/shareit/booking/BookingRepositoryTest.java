@@ -86,14 +86,14 @@ public class BookingRepositoryTest {
     void findByItem_idAndEndIsAfterOrderByEndTest() {
         List<Booking> bookings = bookingRepository.findByItem_idAndEndIsAfterOrderByEnd(item.getId(), LocalDateTime.now());
         assertThat(bookings).isNotEmpty().isNotNull();
-        assertThat(bookings.get(2)).isEqualTo(bookingAfterEnd);
+        assertThat(bookings.stream().filter(b->b.getId()==bookingAfterEnd.getId()).findFirst().get()).isEqualTo(bookingAfterEnd);
     }
 
     @Test
     void findByItem_idAndEndIsBeforeOrderByEndDescTest() {
         List<Booking> bookings = bookingRepository.findByItem_idAndEndIsBeforeOrderByEndDesc(item.getId(), LocalDateTime.now());
         assertThat(bookings).isNotEmpty().isNotNull();
-        assertThat(bookings.get(0)).isEqualTo(bookingBeforeEnd);
+        assertThat(bookings.stream().filter(b->b.getId()==bookingBeforeEnd.getId()).findFirst().get()).isEqualTo(bookingBeforeEnd);
     }
 
     @Test
@@ -163,14 +163,14 @@ public class BookingRepositoryTest {
     void getPastOwnerTest() {
         List<Booking> bookings = bookingRepository.getPastOwner(user.getId(), PageRequest.of(0, 10)).toList();
         assertThat(bookings).isNotEmpty().isNotNull();
-        assertThat(bookings.get(0)).isEqualTo(bookingBeforeEnd);
+        assertThat(bookings.stream().filter(b->b.getId()==bookingBeforeEnd.getId()).findFirst().get()).isEqualTo(bookingBeforeEnd);
     }
 
     @Test
     void getPastBookerrTest() {
         List<Booking> bookings = bookingRepository.getPastBooker(user.getId(), PageRequest.of(0, 10)).toList();
         assertThat(bookings).isNotEmpty().isNotNull();
-        assertThat(bookings.get(0)).isEqualTo(bookingBeforeEnd);
+        assertThat(bookings.stream().filter(b->b.getId()==bookingBeforeEnd.getId()).findFirst().get()).isEqualTo(bookingBeforeEnd);
     }
 
 

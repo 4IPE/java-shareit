@@ -64,11 +64,6 @@ public class ErrorHandler {
         return Map.of("DateException: ", e.getMessage());
     }
 
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.CONFLICT)
-//    public Map<String, String> valid(final RuntimeException e) {
-//        return Map.of("RuntimeException: ", e.getMessage());
-//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -90,9 +85,9 @@ public class ErrorHandler {
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMethodArgumentNotValidException() {
+    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return Map.of("MethodArgumentNotValidException", "Валидация объекта не прошла");
     }
 
