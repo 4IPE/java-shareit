@@ -167,7 +167,7 @@ public class BookingRepositoryTest {
     }
 
     @Test
-    void getPastBookerrTest() {
+    void getPastBookerTest() {
         List<Booking> bookings = bookingRepository.getPastBooker(user.getId(), PageRequest.of(0, 10)).toList();
         assertThat(bookings).isNotEmpty().isNotNull();
         assertThat(bookings.stream().filter(b -> b.getId() == bookingBeforeEnd.getId()).findFirst().get()).isEqualTo(bookingBeforeEnd);
