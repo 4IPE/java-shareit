@@ -189,10 +189,12 @@ public class ItemServiceTest {
         assertThat(resEmpty).isNotNull().isEmpty();
 
         Pageable pageable = PageRequest.of(0, 10);
-        when(itemRepository.findAll(pageable)).thenReturn(Page.empty());
+        List<Item> items = List.of(item);
+        Page<Item> itemPage = new PageImpl<>(items,pageable,items.size());
+        when(itemRepository.findAll(pageable)).thenReturn(itemPage);
         when(itemMapper.toItemDto(item)).thenReturn(itemDto);
         var res = itemService.search("Des", 0, 10);
-        assertThat(resEmpty).isNotNull().isEmpty();
+        assertThat(res).isNotNull().isNotEmpty();
 
     }
 
