@@ -190,7 +190,7 @@ public class ItemServiceTest {
 
         Pageable pageable = PageRequest.of(0, 10);
         List<Item> items = List.of(item);
-        Page<Item> itemPage = new PageImpl<>(items,pageable,items.size());
+        Page<Item> itemPage = new PageImpl<>(items, pageable, items.size());
         when(itemRepository.findAll(pageable)).thenReturn(itemPage);
         when(itemMapper.toItemDto(item)).thenReturn(itemDto);
         var res = itemService.search("Des", 0, 10);
