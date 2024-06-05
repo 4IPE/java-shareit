@@ -83,7 +83,13 @@ public class UserControllerTest {
 
 
     @Test
-    void updUserTest() throws Exception {
+    void deleteUserTest() throws Exception {
+        mvc.perform(delete("/users/{userId}", userDto.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateUserTest() throws Exception {
         when(userService.update(anyInt(), any()))
                 .thenReturn(userDto);
         mvc.perform(patch("/users/{userId}", userDto.getId())
@@ -97,3 +103,4 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email", is(userDto.getEmail())));
     }
 }
+

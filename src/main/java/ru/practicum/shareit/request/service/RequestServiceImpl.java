@@ -45,7 +45,6 @@ public class RequestServiceImpl implements RequestService {
         List<ItemRequestOutDto> requests = requestRepository.findByRequestor_id(idUser).stream()
                 .map(requestMapper::toItemRequestOutDto)
                 .collect(Collectors.toList());
-        List<ItemRequestOutDto> reques = requests;
         requests.forEach(request -> request.setItems(itemRepository.findByRequestId(request.getId()).stream()
                 .map(itemMapper::toRequestItemDto)
                 .collect(Collectors.toList())));

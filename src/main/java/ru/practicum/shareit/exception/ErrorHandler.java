@@ -64,6 +64,11 @@ public class ErrorHandler {
         return Map.of("DateException: ", e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> zeroItem(final ZeroItemsException e) {
+        return Map.of("ZeroItemsException: ", e.getMessage());
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)

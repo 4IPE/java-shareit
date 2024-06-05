@@ -21,6 +21,15 @@ public class ExceptionHandlerTest {
     }
 
     @Test
+    void zeroItemTest() {
+        var ex = new ZeroItemsException("Items zero");
+        var res = errorHandler.zeroItem(ex);
+        Map<String, String> exception = Map.of("ZeroItemsException", ex.getMessage());
+        assertThat(res).isNotNull();
+        assertThat(res.values().stream().findFirst()).isEqualTo(exception.values().stream().findFirst());
+    }
+
+    @Test
     void notFoundTest() {
         var ex = new NotFoundException(Object.class, 1);
         var res = errorHandler.notFound(ex);
