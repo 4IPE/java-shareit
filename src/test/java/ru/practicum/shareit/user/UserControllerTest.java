@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private MockMvc mvc;

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentOutDtoTest {
 
     @Autowired
-    JacksonTester<CommentOutDto> json;
+    private JacksonTester<CommentOutDto> json;
 
     @Test
     void testSerialize() throws Exception {

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -22,15 +24,19 @@ public class CommentRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private RequestRepository requestRepository;
 
     private Comment comment;
     private User user;
     private Item item;
+    private ItemRequest request;
 
 
     @BeforeEach
     void setUp() {
         this.user = createUser("User", "user@g.ru");
+        this.request = createRequest("Des");
         this.item = createItem("Item", "item des");
         this.comment = createComment("Comment");
     }
@@ -57,8 +63,16 @@ public class CommentRepositoryTest {
         itemCreate.setDescription(des);
         itemCreate.setAvailable(true);
         itemCreate.setOwnerId(user);
-        itemCreate.setRequestId(2);
+        itemCreate.setRequest(request);
         return itemRepository.save(itemCreate);
+    }
+
+    private ItemRequest createRequest(String des) {
+        ItemRequest itemRequest = new ItemRequest();
+        itemRequest.setDescription(des);
+        itemRequest.setRequestor(user);
+        itemRequest.setCreated(LocalDateTime.now());
+        return requestRepository.save(itemRequest);
     }
 
     @Test

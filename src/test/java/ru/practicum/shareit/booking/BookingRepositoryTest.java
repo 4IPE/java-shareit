@@ -9,6 +9,8 @@ import ru.practicum.shareit.booking.enumarated.StatusBooking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -26,6 +28,8 @@ public class BookingRepositoryTest {
     private ItemRepository itemRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private RequestRepository requestRepository;
 
 
     private User user;
@@ -34,6 +38,7 @@ public class BookingRepositoryTest {
     private Booking bookingAfterEnd;
     private Booking bookingAfterStart;
     private Booking bookingBeforeEnd;
+    private ItemRequest request;
 
     @BeforeEach
     void setUp() {
@@ -46,6 +51,7 @@ public class BookingRepositoryTest {
                 LocalDateTime.of(2024, 12, 12, 12, 12, 12), StatusBooking.WAITING);
         this.bookingBeforeEnd = createBooking(LocalDateTime.of(2023, 11, 11, 11, 11, 11),
                 LocalDateTime.of(2023, 12, 12, 12, 12, 12), StatusBooking.WAITING);
+        this.request = createRequest("Des");
     }
 
     private User createUser(String name, String email) {
@@ -61,8 +67,16 @@ public class BookingRepositoryTest {
         itemCreate.setDescription(des);
         itemCreate.setAvailable(true);
         itemCreate.setOwnerId(user);
-        itemCreate.setRequestId(2);
+        itemCreate.setRequest(request);
         return itemRepository.save(itemCreate);
+    }
+
+    private ItemRequest createRequest(String des) {
+        ItemRequest itemRequest = new ItemRequest();
+        itemRequest.setDescription(des);
+        itemRequest.setRequestor(user);
+        itemRequest.setCreated(LocalDateTime.now());
+        return requestRepository.save(itemRequest);
     }
 
     private Booking createBooking(LocalDateTime timeEnd, LocalDateTime timeStart, StatusBooking statusBooking) {

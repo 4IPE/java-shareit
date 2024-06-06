@@ -22,6 +22,7 @@ import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -57,6 +58,7 @@ public class BookingServiceTest {
     private BookingInDto bookingInDto;
     private ItemDto itemDto;
     private UserDto userDto;
+    private ItemRequest request;
 
 
     @BeforeEach
@@ -82,12 +84,17 @@ public class BookingServiceTest {
         booker.setName("Booker");
         booker.setId(2);
         booker.setName("nam2e@f.g");
+        request = new ItemRequest();
+        request.setDescription("Des");
+        request.setRequestor(booker);
+        request.setCreated(LocalDateTime.now());
+        request.setId(1);
         item = new Item();
         item.setName("Item");
         item.setId(1);
         item.setDescription("Des");
         item.setAvailable(false);
-        item.setRequestId(2);
+        item.setRequest(request);
         item.setOwnerId(user);
         itemDto = ItemDto.builder()
                 .id(1)

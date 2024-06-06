@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class RequestControllerTest {
     @MockBean
-    RequestService requestService;
+    private RequestService requestService;
 
     @Autowired
     private MockMvc mvc;

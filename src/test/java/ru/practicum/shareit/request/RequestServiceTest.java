@@ -62,12 +62,17 @@ public class RequestServiceTest {
         requestUser.setName("requestUser");
         requestUser.setId(2);
         requestUser.setName("narequestUserme@f.g");
+        request = new ItemRequest();
+        request.setId(4);
+        request.setCreated(LocalDateTime.now());
+        request.setDescription("des");
+        request.setRequestor(requestUser);
         item = new Item();
         item.setName("Item");
         item.setId(3);
         item.setDescription("Des");
         item.setAvailable(true);
-        item.setRequestId(2);
+        item.setRequest(request);
         item.setOwnerId(user);
         itemDto = RequestItemDto.builder()
                 .id(1)
@@ -76,11 +81,6 @@ public class RequestServiceTest {
                 .description("Des")
                 .available(true)
                 .build();
-        request = new ItemRequest();
-        request.setId(4);
-        request.setCreated(LocalDateTime.now());
-        request.setDescription("des");
-        request.setRequestor(requestUser);
         requestInDto = new ItemRequestInDto();
         requestInDto.setDescription("Des");
         requestOutDto = new ItemRequestOutDto();

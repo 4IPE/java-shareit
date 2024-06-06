@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
                         .filter((r) -> r.getDescription().toLowerCase().contains(s.toLowerCase().substring(0, s.length() - 2)))
                         .collect(Collectors.toList());
             }
-            item.setRequestId(Objects.requireNonNull(requestsFind.stream().findFirst().orElse(null)).getId());
+            item.setRequest(Objects.requireNonNull(requestsFind.stream().findFirst().orElse(null)));
             requestsFind = null;
         }
         return itemMapper.toItemDto(itemRepository.save(item));

@@ -15,7 +15,9 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 public interface ItemMapper {
     @Mapping(target = "nextBooking", ignore = true)
     @Mapping(target = "lastBooking", ignore = true)
+    @Mapping(target = "requestId", source = "request.id")
     ItemDto toItemDto(Item item);
 
+    @Mapping(target = "requestId", source = "request.id")
     RequestItemDto toRequestItemDto(Item item);
 }

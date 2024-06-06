@@ -68,6 +68,7 @@ public class ItemServiceTest {
     private CommentOutDto commentOutDto;
     private CommentInDto commentInDto;
     private Booking booking;
+    private ItemRequest request;
 
 
     @BeforeEach
@@ -102,19 +103,24 @@ public class ItemServiceTest {
         booker.setName("Booker");
         booker.setId(2);
         booker.setEmail("nam2e@f.g");
+        request = new ItemRequest();
+        request.setDescription("Des");
+        request.setRequestor(booker);
+        request.setCreated(LocalDateTime.now());
+        request.setId(1);
         item = new Item();
         item.setName("Item");
-        item.setId(1);
+        item.setId(2);
         item.setDescription("Des");
         item.setAvailable(true);
-        item.setRequestId(2);
+        item.setRequest(request);
         item.setOwnerId(user);
         itemSec = new Item();
         itemSec.setName("Item2");
         itemSec.setId(2);
         itemSec.setDescription("Des2");
         itemSec.setAvailable(true);
-        itemSec.setRequestId(2);
+        itemSec.setRequest(request);
         itemSec.setOwnerId(user);
         itemDto = ItemDto.builder()
                 .id(1)
@@ -178,9 +184,8 @@ public class ItemServiceTest {
         when(bookingRepository.findByItem_idOrderByStart(anyInt())).thenReturn(Collections.emptyList());
         var res = itemService.getItem(item.getId(), user.getId());
         assertThat(res).isNotNull();
-        assertThat(res.getId()).isEqualTo(item.getId());
-        assertThat(res.getRequestId()).isEqualTo(item.getRequestId());
         assertThat(res.getAvailable()).isEqualTo(item.getAvailable());
+        assertThat(res.getName()).isEqualTo(item.getName());
     }
 
     @Test
