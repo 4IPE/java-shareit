@@ -8,12 +8,11 @@ import ru.practicum.shareit.booking.dto.BookingInDto;
 import ru.practicum.shareit.booking.dto.BookingOutDto;
 import ru.practicum.shareit.booking.service.BookingService;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * TODO Sprint add-bookings.
- */
+
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -41,13 +40,20 @@ public class BookingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingOutDto>> getAllBookingWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
-                                                                      @RequestHeader("X-Sharer-User-Id") Integer idUser) {
-        return ResponseEntity.ok().body(bookingService.getAllBookingWithState(state, idUser));
+    public ResponseEntity<List<BookingOutDto>> getAllBooking(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
+                                                             @Min(value = 0) @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                             @Min(value = 1) @RequestParam(required = false, defaultValue = "10") Integer size,
+                                                             @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+
+        return ResponseEntity.ok().body(bookingService.getAllBookingWithState(state, idUser, from, size));
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<BookingOutDto>> getBookingOwnerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state, @RequestHeader("X-Sharer-User-Id") int idUser) {
-        return ResponseEntity.ok().body(bookingService.getBookingOwnerWithState(state, idUser));
+    public ResponseEntity<List<BookingOutDto>> getBookingOwner(@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
+                                                               @Min(value = 0) @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                               @Min(value = 1) @RequestParam(required = false, defaultValue = "10") Integer size,
+                                                               @RequestHeader("X-Sharer-User-Id") int idUser) {
+
+        return ResponseEntity.ok().body(bookingService.getBookingOwnerWithState(state, idUser, from, size));
     }
 }

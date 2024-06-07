@@ -8,9 +8,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @Getter
 @Setter
 @Builder
@@ -23,4 +21,5 @@ public class ItemDto {
     private BookingItemDto lastBooking;
     private BookingItemDto nextBooking;
     private List<CommentOutDto> comments;
+    private int requestId;
 }

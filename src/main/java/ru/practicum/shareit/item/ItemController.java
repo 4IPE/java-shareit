@@ -11,11 +11,10 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -45,13 +44,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemDto>> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser) {
-        return ResponseEntity.ok().body(itemService.getItemWithIdUser(idUser));
+    public ResponseEntity<List<ItemDto>> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser,
+                                                           @Min(value = 0) @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                           @Min(value = 1) @RequestParam(required = false, defaultValue = "10") Integer size) {
+        return ResponseEntity.ok().body(itemService.getItemWithIdUser(idUser, from, size));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ItemDto>> search(@RequestParam(name = "text", required = false) String desc) {
-        return ResponseEntity.ok().body(itemService.search(desc));
+    public ResponseEntity<List<ItemDto>> search(@RequestParam(name = "text", required = false) String desc,
+                                                @Min(value = 0) @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                @Min(value = 1) @RequestParam(required = false, defaultValue = "10") Integer size) {
+        return ResponseEntity.ok().body(itemService.search(desc, from, size));
     }
 
 }

@@ -1,17 +1,16 @@
 package ru.practicum.shareit.user;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 
-/**
- * TODO Sprint add-controllers.
- */
-
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "USERS")

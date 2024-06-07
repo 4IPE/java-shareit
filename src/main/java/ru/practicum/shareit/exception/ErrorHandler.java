@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.model.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 
@@ -64,9 +65,15 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> valid(final RuntimeException e) {
-        return Map.of("RuntimeException: ", e.getMessage());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> zeroItem(final ZeroItemsException e) {
+        return Map.of("ZeroItemsException: ", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> paramIncorrect(final ConstraintViolationException e) {
+        return Map.of("ConstraintViolationException: ", e.getMessage());
     }
 
     @ExceptionHandler
@@ -79,20 +86,20 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handlerThrowable(final Throwable e) {
-        log.info("500 {}", e.getClass());
+        log.info("500 {}", e.getClass() + "   " + e.getMessage());
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMethodArgumentNotValidException() {
-        return Map.of("MethodArgumentNotValidException", "ошибка");
+    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return Map.of("MethodArgumentNotValidException", "Валидация объекта не прошла");
     }
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMissingServletRequestParameterException() {
-        return Map.of("MissingServletRequestParameterException", "ошибка");
+    public Map<String, String> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return Map.of("MissingServletRequestParameterException", "ошибка   " + e.getMessage());
     }
 
 }
