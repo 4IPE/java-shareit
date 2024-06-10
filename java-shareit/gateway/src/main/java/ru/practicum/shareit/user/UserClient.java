@@ -28,21 +28,22 @@ public class UserClient extends BaseClient {
     public ResponseEntity<Object> addUser(UserInDto user) {
         return post("", user);
     }
+
     public ResponseEntity<Object> updateUser(Integer userId, UserDto user) {
         return patch("/" + userId, user);
     }
+
     public ResponseEntity<Object> getUserById(Integer userId) {
         return get("/" + userId);
     }
+
     public ResponseEntity<Object> getUsers() {
         return get("");
     }
+
     public ResponseEntity<Object> deleteUser(Integer userId) {
-        return delete("/"+userId);
+        return delete("/" + userId);
     }
-
-
-
 
 
 }

@@ -11,7 +11,6 @@ import ru.practicum.shareit.user.dto.UserInDto;
 import javax.validation.Valid;
 
 
-
 @RestController
 @RequestMapping(path = "/users")
 @Slf4j
@@ -41,7 +40,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable Integer userId, @Valid @RequestBody UserDto user) {
         log.info("Выполнен запрос к методу updateUser{}", user.toString());
-        return userClient.updateUser(userId,user);
+        return userClient.updateUser(userId, user);
     }
 
     @DeleteMapping("/{userId}")

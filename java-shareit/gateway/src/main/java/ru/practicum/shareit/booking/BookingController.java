@@ -31,6 +31,7 @@ public class BookingController {
 		log.info("Creating booking {}, userId={}", requestDto, userId);
 		return bookingClient.bookItem(userId, requestDto);
 	}
+
 	@PatchMapping("/{bookingId}")
 	public ResponseEntity<Object> confirmationBooking(@PathVariable Integer bookingId,
 													  @NotNull @RequestParam(name = "approved") Boolean app,
@@ -38,27 +39,30 @@ public class BookingController {
 		log.info("Creating bookingId {}, userId={}, app={}",bookingId, userId,app);
 		return bookingClient.confirmation(userId,bookingId,app);
 	}
+
 	@GetMapping("/{bookingId}")
 	public ResponseEntity<Object> getBooking(@RequestHeader("X-Sharer-User-Id") int userId,
 											 @PathVariable int bookingId) {
 		log.info("Get booking {}, userId={}", bookingId, userId);
 		return bookingClient.getBooking(userId, bookingId);
 	}
+
 	@GetMapping
 	public ResponseEntity<Object> getAllBooking(@RequestHeader("X-Sharer-User-Id") int userId,
-			@RequestParam(name = "state", defaultValue = "all") String stateParam,
-			@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-			@Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+												@RequestParam(name = "state", defaultValue = "all") String stateParam,
+												@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+												@Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 		BookingState state = BookingState.from(stateParam)
 				.orElseThrow(() -> new NotFoundArgumentStatusException(stateParam));
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
 		return bookingClient.getBookings(userId, state, from, size);
 	}
+
 	@GetMapping("/owner")
 	public ResponseEntity<Object> getBookingOwner(@RequestHeader("X-Sharer-User-Id") int userId,
-											  @RequestParam(name = "state", defaultValue = "all") String stateParam,
-											  @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-											  @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+												  @RequestParam(name = "state", defaultValue = "all") String stateParam,
+												  @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+												  @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 		BookingState state = BookingState.from(stateParam)
 				.orElseThrow(() -> new NotFoundArgumentStatusException(stateParam));
 		log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
