@@ -31,11 +31,11 @@ public class BookingClient extends BaseClient {
     public ResponseEntity<Object> bookItem(Integer userId, BookItemRequestDto requestDto) {
         return post("", userId, requestDto);
     }
-    public ResponseEntity<Object> confirmation(Integer userId, Integer bookingId,Boolean app) {
+    public ResponseEntity<Object> confirmation(Integer userId, Integer bookingId,Boolean approved) {
         Map<String, Object> parameters = Map.of(
-                "approved", app
+                "approved", approved
         );
-        return patch("/" + bookingId, userId);
+        return patch("/" + bookingId+"?approved={approved}", userId,parameters);
     }
     public ResponseEntity<Object> getBooking(Integer userId, Integer bookingId) {
         return get("/" + bookingId, userId);

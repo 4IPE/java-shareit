@@ -3,11 +3,9 @@ services:
     build: server
     image: shareitserver
     container_name: shareit-server
-#    dockerfile: Dockerfile
     ports:
       - "9090:9090"
     environment:
-      - TZ = Europe/Moscow
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
       - SPRING_DATASOURCE_USERNAME=dan
       - SPRING_DATASOURCE_PASSWORD=12345
@@ -18,7 +16,6 @@ services:
     build: gateway
     image: shareitgateway
     container_name: shareit-gateway
-#    dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -31,7 +28,6 @@ services:
     ports:
       - "6541:5432"
     environment:
-      - TZ = Europe/Moscow
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=dan
       - POSTGRES_DB=shareit

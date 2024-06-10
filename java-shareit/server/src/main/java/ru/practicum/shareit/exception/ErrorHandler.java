@@ -52,11 +52,11 @@ public class ErrorHandler {
     public Map<String, String> uniqueEmail(final UniqueEmailException uniqueEmailException) {
         return Map.of("UniqueEmailException: ", uniqueEmailException.getMessage());
     }
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.CONFLICT)
-//    public Map<String, String> dataExp(final DataIntegrityViolationException dataIntegrityViolationException) {
-//        return Map.of("DataIntegrityViolationException: ", "data error");
-//    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> dataExp(final DataIntegrityViolationException dataIntegrityViolationException) {
+        return Map.of("DataIntegrityViolationException: ", "data error");
+    }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> noAvailable(final NoAvailableException e) {
