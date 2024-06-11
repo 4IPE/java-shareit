@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
+    private static List<ItemRequest> requestsFind;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
     private final CommentRepository commentRepository;
@@ -42,7 +43,6 @@ public class ItemServiceImpl implements ItemService {
     private final BookingMapper bookingMapper;
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
-    private static List<ItemRequest> requestsFind;
 
     @Override
     public ItemDto addItem(Item item, int id) {

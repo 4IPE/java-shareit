@@ -27,15 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = ItemRequestController.class)
 @AutoConfigureMockMvc
 public class RequestControllerTest {
+    private final ObjectMapper mapper = new ObjectMapper();
     @MockBean
     private RequestService requestService;
-
     @Autowired
     private MockMvc mvc;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
-
     private UserDto userDto;
     private ItemRequestOutDto itemRequestOutDto;
 
