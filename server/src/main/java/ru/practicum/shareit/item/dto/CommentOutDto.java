@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class CommentOutDto {
-    private int id;
+    private Integer id;
     private String text;
     private String authorName;
     private LocalDateTime created;

@@ -26,23 +26,23 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<Object> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable int itemId, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+    public ResponseEntity<Object> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable Integer itemId, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
         return itemClient.addComment(idUser, itemId, comment);
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity<Object> editItem(@PathVariable int itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") int idUser) {
+    public ResponseEntity<Object> editItem(@PathVariable Integer itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
         return itemClient.editItem(idUser, item, itemId);
     }
 
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Object> getItem(@PathVariable int itemId, @RequestHeader(value = "X-Sharer-User-Id", required = false) int idUser) {
+    public ResponseEntity<Object> getItem(@PathVariable Integer itemId, @RequestHeader(value = "X-Sharer-User-Id", required = false) Integer idUser) {
         return itemClient.getItem(idUser, itemId);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser,
+    public ResponseEntity<Object> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") Integer idUser,
                                                     @PositiveOrZero @RequestParam(required = false, defaultValue = "0") Integer from,
                                                     @Positive @RequestParam(required = false, defaultValue = "10") Integer size) {
         return itemClient.getItemWithIdUser(idUser, from, size);

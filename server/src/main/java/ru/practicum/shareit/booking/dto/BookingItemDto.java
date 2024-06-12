@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class BookingItemDto {
-    private int id;
+    private Integer id;
     private Integer bookerId;
 }

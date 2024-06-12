@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ItemRequestOutDto {
-    private int id;
+    private Integer id;
     private String description;
     private LocalDateTime created;
     private List<RequestItemDto> items;

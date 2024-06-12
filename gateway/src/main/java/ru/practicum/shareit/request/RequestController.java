@@ -24,27 +24,27 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<Object> addRequest(@Valid @RequestBody ItemRequestInDto itemRequest,
-                                             @RequestHeader("X-Sharer-User-Id") int userId) {
+                                             @RequestHeader("X-Sharer-User-Id") Integer userId) {
         return requestClient.addRequest(userId, itemRequest);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getRequestWithIdUser(@RequestHeader("X-Sharer-User-Id") int idRequester) {
+    public ResponseEntity<Object> getRequestWithIdUser(@RequestHeader("X-Sharer-User-Id") Integer idRequester) {
         return requestClient.getRequestWithIdUser(idRequester);
     }
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllRequest(@PositiveOrZero @RequestParam(required = false) Integer from,
                                                 @Positive @RequestParam(required = false) Integer size,
-                                                @RequestHeader("X-Sharer-User-Id") int idRequester) {
+                                                @RequestHeader("X-Sharer-User-Id") Integer idRequester) {
 
         return requestClient.getAllRequest(idRequester, from, size);
 
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<Object> getRequestWithId(@RequestHeader("X-Sharer-User-Id") int userId,
-                                                   @PathVariable int requestId) {
+    public ResponseEntity<Object> getRequestWithId(@RequestHeader("X-Sharer-User-Id") Integer userId,
+                                                   @PathVariable Integer requestId) {
         return requestClient.getRequestWithId(userId, requestId);
     }
 }

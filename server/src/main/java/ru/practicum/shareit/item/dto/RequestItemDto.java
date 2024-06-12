@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class RequestItemDto {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private Boolean available;

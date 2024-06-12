@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class BookingOutDto {
-    private int id;
+    private Integer id;
     private LocalDateTime start;
     private LocalDateTime end;
     private ItemDto item;

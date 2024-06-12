@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "description", nullable = false)
     private String description;
     @ManyToOne
