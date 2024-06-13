@@ -28,23 +28,23 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable int itemId, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
+    public ResponseEntity<CommentOutDto> addComment(@Valid @RequestBody CommentInDto comment, @PathVariable Integer itemId, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
         return ResponseEntity.ok().body(itemService.addComment(comment, itemId, idUser));
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity<ItemDto> editItem(@PathVariable int itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") int idUser) {
+    public ResponseEntity<ItemDto> editItem(@PathVariable Integer itemId, @Valid @RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") Integer idUser) {
         return ResponseEntity.ok().body(itemService.editItem(itemId, item, idUser));
     }
 
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemDto> getItem(@PathVariable int itemId, @RequestHeader(value = "X-Sharer-User-Id", required = false) int idUser) {
+    public ResponseEntity<ItemDto> getItem(@PathVariable Integer itemId, @RequestHeader(value = "X-Sharer-User-Id", required = false) Integer idUser) {
         return ResponseEntity.ok().body(itemService.getItem(itemId, idUser));
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemDto>> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") int idUser,
+    public ResponseEntity<List<ItemDto>> getItemWithIdUser(@RequestHeader("X-Sharer-User-Id") Integer idUser,
                                                            @Min(value = 0) @RequestParam(required = false, defaultValue = "0") Integer from,
                                                            @Min(value = 1) @RequestParam(required = false, defaultValue = "10") Integer size) {
         return ResponseEntity.ok().body(itemService.getItemWithIdUser(idUser, from, size));

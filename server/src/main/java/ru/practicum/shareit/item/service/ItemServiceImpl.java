@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.enumarated.StatusBooking;
@@ -45,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
     private final RequestRepository requestRepository;
 
     @Override
-    public ItemDto addItem(Item item, int id) {
+    public ItemDto addItem(Item item, Integer id) {
         User owner = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, id));
         item.setOwnerId(owner);
         List<ItemRequest> requestsFind = requestRepository.findAll();
@@ -63,15 +64,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CommentOutDto addComment(CommentInDto comment, int idItem, int idUser) {
+    public CommentOutDto addComment(CommentInDto comment, Integer idItem, Integer idUser) {
         Item item = itemRepository.findById(idItem).orElseThrow(() -> new NotFoundException(Item.class, idItem));
         User user = userRepository.findById(idUser).orElseThrow(() -> new NotFoundException(User.class, idUser));
         List<Item> items = bookingRepository.findByItem_idAndEndIsBeforeOrderByEndDesc(idItem, LocalDateTime.now())
                 .stream()
-                .filter(booking -> booking.getBooker().getId() == idUser)
+                .filter(booking -> booking.getBooker().getId().equals(idUser))
                 .map(Booking::getItem)
                 .collect(Collectors.toList());
-        if (item.getOwnerId().getId() == idUser) {
+        if (item.getOwnerId().getId().equals(idUser)) {
             throw new CommentCreatedException("Владелец вещи не может оставлять комментарии");
         }
         if (bookingRepository.findByBooker_idAndItem_id(idUser, idItem).isEmpty()) {
@@ -88,9 +89,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto getItem(int id, int idUser) {
+    public ItemDto getItem(Integer id, Integer idUser) {
         ItemDto item = itemMapper.toItemDto(itemRepository.findById(id).orElseThrow(() -> new NotFoundException(Item.class, id)));
-        if (item.getOwnerId().getId() == idUser) {
+        if (item.getOwnerId().getId().equals(idUser)) {
             List<Booking> bookings = bookingRepository.findByItem_idOrderByStart(item.getId());
             item.setNextBooking(bookings.stream()
                     .filter(b -> b.getStart().isAfter(LocalDateTime.now()) && b.getStatus().equals(StatusBooking.APPROVED))
@@ -108,9 +109,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemWithIdUser(int id, Integer from, Integer size) {
+    public List<ItemDto> getItemWithIdUser(Integer id, Integer from, Integer size) {
         int page = from / size;
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("id")));
         List<ItemDto> itemDto = itemRepository.findByOwnerId_id(id, pageable)
                 .stream()
                 .map(itemMapper::toItemDto)
@@ -133,7 +134,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto editItem(int id, ItemDto itemDto, int idUser) {
+    public ItemDto editItem(Integer id, ItemDto itemDto, Integer idUser) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new NotFoundException(Item.class, id));
         item.setId(item.getId());
         item.setName(itemDto.getName() != null && !itemDto.getName().equals(item.getName()) ? itemDto.getName() : item.getName());
