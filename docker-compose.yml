@@ -6,9 +6,8 @@ services:
     ports:
       - "9090:9090"
     environment:
-#      - TZ = Europe/Moscow
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
-      - SPRING_DATASOURCE_USERNAME=dan
+      - SPRING_DATASOURCE_USERNAME=dbuser
       - SPRING_DATASOURCE_PASSWORD=12345
     depends_on:
       - db
@@ -31,9 +30,8 @@ services:
     ports:
       - "6541:5432"
     environment:
-#      - TZ = Europe/Moscow
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_USER=dan
+      - POSTGRES_USER=dbuser
       - POSTGRES_DB=shareit
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
