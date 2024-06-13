@@ -22,32 +22,29 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     Page<Booking> findByBooker_id(Integer booker, Pageable pageable);
 
-    List<Booking> findByBooker_id(Integer booker);
-
-
     Page<Booking> findByBooker_idAndStartIsAfter(Integer booker, LocalDateTime now, Pageable pageable);
 
     @Query(value = "SELECT *\n" +
             "FROM BOOKINGS b \n" +
-            "WHERE b.BOOKER_ID  =?1 AND b.START_DATE <= CURRENT_TIME() AND b.END_DATE >= CURRENT_TIME()", nativeQuery = true)
+            "WHERE b.BOOKER_ID  =?1 AND b.START_DATE <= NOW() AND b.END_DATE >= NOW()", nativeQuery = true)
     Page<Booking> getCurrentBooker(Integer id, Pageable pageable);
 
     @Query(value = "SELECT *\n" +
             "FROM BOOKINGS b \n" +
             "JOIN ITEMS i ON b.ITEM_ID = i.ID \n" +
-            "WHERE i.OWNER_ID =?1 AND b.START_DATE <= CURRENT_TIME() AND b.END_DATE >= CURRENT_TIME()", nativeQuery = true)
+            "WHERE i.OWNER_ID =?1 AND b.START_DATE <= NOW() AND b.END_DATE >= NOW()", nativeQuery = true)
     Page<Booking> getCurrentOwner(Integer id, Pageable pageable);
 
     @Query(value = "SELECT *\n" +
             "FROM BOOKINGS b \n" +
             "JOIN ITEMS i ON b.ITEM_ID = i.ID \n" +
-            "WHERE i.OWNER_ID =?1 AND b.START_DATE <= CURRENT_TIME() AND b.END_DATE <= CURRENT_TIME() " +
+            "WHERE i.OWNER_ID =?1 AND b.START_DATE <= NOW() AND b.END_DATE <= NOW() " +
             "ORDER BY END_DATE DESC", nativeQuery = true)
     Page<Booking> getPastOwner(Integer id, Pageable pageable);
 
     @Query(value = "SELECT *\n" +
             "FROM BOOKINGS b \n" +
-            "WHERE b.BOOKER_ID =?1 AND b.START_DATE <= CURRENT_TIME() AND b.END_DATE <= CURRENT_TIME() " +
+            "WHERE b.BOOKER_ID =?1 AND b.START_DATE <= NOW() AND b.END_DATE <= NOW() " +
             "ORDER BY END_DATE DESC", nativeQuery = true)
     Page<Booking> getPastBooker(Integer id, Pageable pageable);
 
