@@ -45,8 +45,8 @@ public class BookingClient extends BaseClient {
     public ResponseEntity<Object> getBookings(Integer userId, BookingState state, Integer from, Integer size) {
         Map<String, Object> parameters = Map.of(
                 "state", state.name(),
-                "from", from!=null?from:0,
-                "size", size!=null?size:10
+                "from", from != null ? from : 0,
+                "size", size != null ? size : 10
         );
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
@@ -54,8 +54,8 @@ public class BookingClient extends BaseClient {
     public ResponseEntity<Object> getBookingOwner(Integer userId, BookingState state, Integer from, Integer size) {
         Map<String, Object> parameters = Map.of(
                 "state", state.name(),
-                "from", from!=null?from:0,
-                "size", size!=null?size:10
+                "from", from != null ? from : 0,
+                "size", size != null ? size : 10
         );
         return get("/owner?state={state}&from={from}&size={size}", userId, parameters);
     }

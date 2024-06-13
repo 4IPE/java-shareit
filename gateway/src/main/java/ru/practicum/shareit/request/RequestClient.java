@@ -36,8 +36,8 @@ public class RequestClient extends BaseClient {
 
     public ResponseEntity<Object> getAllRequest(Integer userId, Integer from, Integer size) {
         Map<String, Object> parameters = Map.of(
-                "from", from!=null?from:0,
-                "size", size!=null?size:10
+                "from", from != null ? from : 0,
+                "size", size != null ? size : 10
         );
         return get("?from={from}&size={size}", userId, parameters);
     }
